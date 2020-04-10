@@ -1,0 +1,7 @@
+# Run:
+#   pip install -r requirements.txt
+
+pandas
+psycopg2
+requests
+selenium
