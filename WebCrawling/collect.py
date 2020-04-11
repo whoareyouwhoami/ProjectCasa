@@ -81,7 +81,6 @@ class WebCrawling:
         while True:
             scroll = self.driver.find_element_by_xpath('/html/body/div[2]/div/section/div[2]/div[1]/div/div/div[2]/div')
             self.driver.execute_script("arguments[0].scrollTop = arguments[0].scrollHeight", scroll)
-            self.driver.execute_script("arguments[0].scrollTop = 0", scroll)
 
             time.sleep(1.5)
 
@@ -91,6 +90,7 @@ class WebCrawling:
             if initial_len != items_len:
                 initial_len = items_len
             else:
+                self.driver.execute_script("arguments[0].scrollTop = 0", scroll)
                 return items
 
     def _apartment_info(self):
