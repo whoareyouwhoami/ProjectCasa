@@ -7,6 +7,8 @@ import pandas as pd
 from selenium import webdriver as wd
 from selenium.webdriver.chrome.options import Options
 
+import WebCrawling.decorators as dc
+
 # Display options
 pd.set_option("display.max_columns", 2000)
 pd.set_option("display.width", 1000)
@@ -23,7 +25,7 @@ class Initiate:
         self.chrome_driver = os.path.join(self.current, 'chromedriver')
 
     def OpenDriver(self):
-        self.driver = wd.Chrome(self.chrome_driver) # options=chrome_options
+        self.driver = wd.Chrome(self.chrome_driver, options=chrome_options) # options=chrome_options
         return self.driver
 
 class WebCrawling:
@@ -57,7 +59,9 @@ class WebCrawling:
 
         self._apartment_info()
         self._school_info()
-        self._tower_info(items=item_list)
+
+        for item in item_list:
+            self._tower_info(items=item)
 
     def _apartment_filter(self):
         # Choosing method
@@ -93,6 +97,7 @@ class WebCrawling:
                 self.driver.execute_script("arguments[0].scrollTop = 0", scroll)
                 return items
 
+    @dc.clean_apartment
     def _apartment_info(self):
         apartment_info = self.driver.find_element_by_xpath("/html/body/div[2]/div/section/div[2]/div[1]/div/div/div[1]/div[1]/div[2]/div[2]/button[1]")
         apartment_info.click()
@@ -112,6 +117,9 @@ class WebCrawling:
         print('Apartment parking:', apartment_parking)
         print('Apartment address:', apartment_address)
 
+        return apartment_built, apartment_builder, apartment_floor, apartment_floor_ratio, apartment_address, apartment_parking
+
+    @dc.clean_school
     def _school_info(self):
         school_info = self.driver.find_element_by_xpath('/html/body/div[2]/div/section/div[2]/div[2]/div/div[2]/div[2]/div/div/a[@id="detailTab4"]')
         school_info.click()
@@ -127,47 +135,49 @@ class WebCrawling:
         print('School address:', school_address)
         print('Number of students:', school_students)
 
+        return school_name, school_dist, school_address, school_students
+
+    @dc.clean_tower
     def _tower_info(self, items):
-        if not items:
-            return False
+        items.click()
+        time.sleep(1)
 
-        for idx in range(len(items)):
-            print("\nList ID:", idx)
-
-            items[idx].click()
-            time.sleep(1)
-
+        try:
+            tower_id = self.driver.find_element_by_css_selector("tr.info_table_item:nth-child(7) > td:nth-child(2)").text
+            int(tower_id)
+        except:
             try:
-                tower_id = self.driver.find_element_by_css_selector("tr.info_table_item:nth-child(7) > td:nth-child(2)").text
-                int(tower_id)
+                tower_id = self.driver.find_element_by_css_selector("tr.info_table_item:nth-child(7) > td:nth-child(4)").text
             except:
-                try:
-                    tower_id = self.driver.find_element_by_css_selector("tr.info_table_item:nth-child(7) > td:nth-child(4)").text
-                except:
-                    continue
+                return False
 
-            tower_head = self.driver.find_element_by_css_selector(".info_title_wrap > h4:nth-child(1)").text
-            tower = self.driver.find_element_by_css_selector(".info_title_wrap > h4:nth-child(1) > strong:nth-child(1)").text
-            tower_floor = tower_head.replace(tower, '')
+        tower_head = self.driver.find_element_by_css_selector(".info_title_wrap > h4:nth-child(1)").text
+        tower = self.driver.find_element_by_css_selector(".info_title_wrap > h4:nth-child(1) > strong:nth-child(1)").text
+        tower_floor = tower_head.replace(tower, '')
 
-            tower_area = self.driver.find_element_by_css_selector(".detail_box--summary > table:nth-child(2) > tbody:nth-child(2) > tr:nth-child(2) > td:nth-child(2)").text
-            tower_bathroom = self.driver.find_element_by_css_selector(".detail_box--summary > table:nth-child(2) > tbody:nth-child(2) > tr:nth-child(3) > td:nth-child(4)").text
-            tower_household = self.driver.find_element_by_css_selector("tr.info_table_item:nth-child(7) > td:nth-child(2)").text
-            tower_floor_mx = self.driver.find_element_by_css_selector(".detail_box--summary > table:nth-child(2) > tbody:nth-child(2) > tr:nth-child(3) > td:nth-child(2)").text
+        tower_area = self.driver.find_element_by_css_selector(".detail_box--summary > table:nth-child(2) > tbody:nth-child(2) > tr:nth-child(2) > td:nth-child(2)").text
+        tower_bathroom = self.driver.find_element_by_css_selector(".detail_box--summary > table:nth-child(2) > tbody:nth-child(2) > tr:nth-child(3) > td:nth-child(4)").text
+        tower_household = self.driver.find_element_by_css_selector("tr.info_table_item:nth-child(7) > td:nth-child(2)").text
+        tower_floor_mx = self.driver.find_element_by_css_selector(".detail_box--summary > table:nth-child(2) > tbody:nth-child(2) > tr:nth-child(3) > td:nth-child(2)").text
 
-            print('Tower ID:', tower_id)
-            print('Tower name:', tower)
-            print('Tower bathroom', tower_bathroom)
-            print('Tower floor:', tower_floor)
-            print('Tower size:', tower_area)
-            print('Tower household:', tower_household)
-            print('Tower maximum floor:', tower_floor_mx)
+        print('Tower ID:', tower_id)
+        print('Tower name:', tower)
+        print('Tower bathroom:', tower_bathroom)
+        print('Tower floor:', tower_floor)
+        print('Tower size:', tower_area)
+        print('Tower household:', tower_household)
+        print('Tower maximum floor:', tower_floor_mx)
 
-            # self._tower_price()
+        tower_price = self._tower_price()
+        print('Tower price:', tower_price)
+        return tower_id, tower, tower_bathroom, tower_floor, tower_area, tower_household, tower_floor_mx
 
+    @dc.clean_price
     def _tower_price(self):
-        price = self.driver.find_element_by_xpath("/html/body/div[2]/div/section/div[2]/div[2]/div/div[2]/div[1]/div[2]/div/a[@id='detailTab2']")
+        price = self.driver.find_element_by_css_selector(".tab_area_list > a:nth-child(2)")
+        # price = self.driver.find_element_by_xpath("/html/body/div[2]/div/section/div[2]/div[2]/div/div[2]/div[1]/div[2]/div/a[@id='detailTab2']")
         price.click()
+
 
         # ------------------------------------------
         # consider deleting it later
@@ -176,8 +186,7 @@ class WebCrawling:
         price_buy = self.driver.find_element_by_xpath('//*[@id="marketPriceTab1"]')
         price_buy.click()
         # ------------------------------------------
-
-        see_more = self.driver.find_element_by_xpath("/html/body/div[2]/div/section/div[2]/div[2]/div/div[2]/div[3]/div/div[4]/button")
+        see_more = self.driver.find_element_by_css_selector("div.detail_price_data:nth-child(4) > button:nth-child(2)")
 
         try:
             while see_more:
@@ -191,7 +200,15 @@ class WebCrawling:
 
         rows = self.driver.find_elements_by_xpath("/html/body/div[2]/div/section/div[2]/div[2]/div/div[2]/div[3]/div/div[4]/table/tbody/tr")
         print('Price list:', len(rows))
-        # for row in rows:
-        #     print(row.text)
+        list_period = []
+        list_amount = []
+
+        for row in rows:
+            txt = row.text.replace('\n', ' ')
+            list_period.append(txt[:7])
+            list_amount.append(txt[9:])
+
+        return list_period, list_amount
+
 
 
