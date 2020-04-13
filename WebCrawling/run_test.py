@@ -1,6 +1,6 @@
 # Test Script
 import time
-import WebCrawling.collect as WebCrawl
+import collect as WebCrawl
 
 class CrawlTest:
     def __init__(self, unit_all=False, url=None):

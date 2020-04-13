@@ -7,7 +7,7 @@ import pandas as pd
 from selenium import webdriver as wd
 from selenium.webdriver.chrome.options import Options
 
-import WebCrawling.decorators as dc
+import decorators as dc
 
 # Display options
 pd.set_option("display.max_columns", 2000)
