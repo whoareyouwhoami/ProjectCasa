@@ -35,12 +35,14 @@ class CrawlTest:
             # for item in item_list:
             #     self.landsite._tower_info(items=item)
 
-    def unit_all(self, page):
-        if page < 1:
+    def unit_all(self, start, end):
+        if end < 1 or start < 1:
             raise ValueError('Input value should be higher than 1')
+        if start > end:
+            raise ValueError('Starting page should be lesser than ending page')
 
-        page += 1
-        for pg in range(1, page):
+        end += 1
+        for pg in range(start, end):
             print('\nURL:', str(pg))
 
             url = 'https://new.land.naver.com/complexes/' + str(pg) + '?ms=37.548119,127.040638,17&a=APT:JGC:ABYG&e=RETAIL'
@@ -57,4 +59,4 @@ test = CrawlTest(unit_all=True, url='https://new.land.naver.com/complexes/1?ms=3
 # test.unit_apartment()
 # test.unit_school()
 # test.unit_tower()
-test.unit_all(2)
+test.unit_all(start=1, end=2)
