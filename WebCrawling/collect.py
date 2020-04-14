@@ -61,6 +61,7 @@ class WebCrawling:
         self._school_info()
 
         for item in item_list:
+            print('')
             self._tower_info(items=item)
 
     def _apartment_filter(self):
@@ -140,7 +141,7 @@ class WebCrawling:
     @dc.clean_tower
     def _tower_info(self, items):
         items.click()
-        time.sleep(1)
+        time.sleep(3)
 
         try:
             tower_id = self.driver.find_element_by_css_selector("tr.info_table_item:nth-child(7) > td:nth-child(2)").text

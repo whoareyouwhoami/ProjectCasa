@@ -77,6 +77,9 @@ def clean_tower(func_tower):
         # id, name, bathroom, floor, area, household, floor_mx
         tower_info = func_tower(*args, **kwargs)
 
+        if tower_info is False:
+            return False
+
         clean_bathroom = tower_info[2].replace('개', '').split('/')
 
         tower_id = int(tower_info[0])
