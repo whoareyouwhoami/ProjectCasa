@@ -40,15 +40,91 @@ class WebCrawling:
         self.url = url
         self.driver.get(self.url)
 
-    def web_verify(self):
-        city = self.driver.find_element_by_css_selector("span.area:nth-child(2)")
-        print(city.text)
-        return True
+    def web_collectURL(self):
+        web_dict = {'city_name':[],
+                    'district_name':[],
+                    'state_name':[],
+                    'url':[]}
 
-        # if city.text == '서울시':
-        #     return True
-        # else:
-        #     return False
+        city_choice = self.driver.find_element_by_css_selector("span.area:nth-child(2)")
+        city_choice.click()
+        time.sleep(1)
+
+        city_list = self.driver.find_elements_by_css_selector("li.area_item")
+        for idx, city_name in enumerate(city_list):
+            if city_name.text == '서울시':
+                tmp_city_name = city_name.text
+                city_list[idx].click()
+                time.sleep(1)
+                break
+
+        district_initial = self.driver.find_elements_by_css_selector("li.area_item")
+        district_pos = 0
+        for i in range(0, len(district_initial)):
+            district_list = self.driver.find_elements_by_css_selector("li.area_item")
+            district = district_list[district_pos]
+            tmp_district_name = district.text
+            district.click()
+            time.sleep(1)
+
+            state_initial = self.driver.find_elements_by_css_selector("li.area_item")
+            state_pos = 0
+            for j in range(0, len(state_initial)):
+                state_list = self.driver.find_elements_by_css_selector("li.area_item")
+                state = state_list[state_pos]
+                tmp_state_name = state.text
+                state.click()
+                time.sleep(1)
+
+                # At this point, you will get a list of apartments
+                apartments_initial = self.driver.find_elements_by_css_selector("li.complex_item")
+                apartment_pos = 0
+                for k in range(0, len(apartments_initial)):
+                    apartments_list = self.driver.find_elements_by_css_selector("li.complex_item")
+                    apartment = apartments_list[apartment_pos]
+                    apartment.click()
+                    time.sleep(1)
+
+                    apartment_url = self.driver.current_url
+                    if apartment_url not in web_dict['url']:
+                        web_dict['city_name'].append(tmp_city_name)
+                        web_dict['district_name'].append(tmp_district_name)
+                        web_dict['state_name'].append(tmp_state_name)
+                        web_dict['url'].append(self.driver.current_url)
+
+                    close_list = self.driver.find_element_by_css_selector("button.btn_close:nth-child(3)")
+                    close_list.click()
+
+                    district_temp = self.driver.find_element_by_css_selector("span.area:nth-child(3)")
+                    district_temp.click()
+                    time.sleep(1)
+
+                    district_temp_list = self.driver.find_elements_by_css_selector("li.area_item")
+                    district_temp_list[i].click()
+                    time.sleep(2)
+
+                    state_temp_list = self.driver.find_elements_by_css_selector("li.area_item")
+                    state_temp_list[j].click()
+                    time.sleep(2)
+
+                    apartment_pos += 1
+
+                state_click = self.driver.find_element_by_css_selector("a.area_select_item:nth-child(5)")
+                state_click.click()
+                time.sleep(1)
+
+                state_pos += 1
+
+            # Returning back to district list
+            district_click = self.driver.find_element_by_css_selector("a.area_select_item:nth-child(3)")
+            district_click.click()
+            time.sleep(1)
+
+            district_pos += 1
+
+        # Saving
+        collect_df = pd.DataFrame(web_dict)
+        collect_df.to_csv('apartment_url.csv', encoding='euc-kr')
 
     def web_collect(self):
         item_list = self._apartment_filter()
