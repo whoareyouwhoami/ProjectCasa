@@ -1,5 +1,6 @@
 # Test Script
 import time
+import pandas as pd
 import collect as WebCrawl
 
 class CrawlTest:
@@ -42,21 +43,27 @@ class CrawlTest:
             raise ValueError('Starting page should be lesser than ending page')
 
         end += 1
-        for pg in range(start, end):
-            print('\nURL:', str(pg))
 
-            url = 'https://new.land.naver.com/complexes/' + str(pg) + '?ms=37.548119,127.040638,17&a=APT:JGC:ABYG&e=RETAIL'
-            self.landsite.web_open(driver=self.driver, url=url)
-            verify = self.landsite.web_verify()
+        try:
+            file = pd.read_csv('apartment_url.csv', encoding='euc-kr')
+        except FileNotFoundError:
+            print('Please run `web_collectURL()` or place `apartment_url.csv` where testing script exist)')
+            return False
 
-            if verify is True:
-                self.landsite.web_collect()
-            else:
-                print('City is not `서울시`. Please check the URL and try again.')
+        url_list = list(file['url'][start:end])
 
+        for idx, url in enumerate(url_list):
+            print('\nURL:', str(idx))
+
+            self.landsite.web_open(driver=self.driver, url=str(url))
+            self.landsite.web_collect()
+
+    def unit_collectURL(self):
+        self.landsite.web_collectURL()
 
 test = CrawlTest(unit_all=True, url='https://new.land.naver.com/complexes/1?ms=37.548119,127.040638,17&a=APT:JGC:ABYG&e=RETAIL')
 # test.unit_apartment()
 # test.unit_school()
 # test.unit_tower()
 test.unit_all(start=1, end=2)
+# test.unit_collectURL()
