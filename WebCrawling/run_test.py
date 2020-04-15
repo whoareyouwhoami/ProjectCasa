@@ -4,14 +4,14 @@ import pandas as pd
 import collect as WebCrawl
 
 class CrawlTest:
-    def __init__(self, unit_all=False, url=None):
+    def __init__(self, unit_all=False, driver_type='chrome',url=None):
         if unit_all is False and url is None:
             raise ValueError("URL required")
 
         self.url = url
         self.initiate = WebCrawl.Initiate()
         self.landsite = WebCrawl.WebCrawling()
-        self.driver = self.initiate.OpenDriver()
+        self.driver = self.initiate.OpenDriver(type=driver_type)
 
         if unit_all is False:
             self.landsite.web_open(driver=self.driver, url=self.url)
@@ -28,13 +28,6 @@ class CrawlTest:
         self.unit_initiate()
         self.landsite._school_info()
 
-    def unit_tower(self):
-        self.unit_initiate()
-        item_list = self.landsite._apartment_filter()
-        if item_list:
-            self.landsite._tower_info(items=item_list[0])
-            # for item in item_list:
-            #     self.landsite._tower_info(items=item)
 
     def unit_all(self, start, end):
         if end < 1 or start < 1:
@@ -42,28 +35,23 @@ class CrawlTest:
         if start > end:
             raise ValueError('Starting page should be lesser than ending page')
 
-        end += 1
-
         try:
             file = pd.read_csv('apartment_url.csv', encoding='euc-kr')
         except FileNotFoundError:
             print('Please run `web_collectURL()` or place `apartment_url.csv` where testing script exist)')
             return False
 
-        url_list = list(file['url'][start:end])
+        url_list = list(file['url'][start - 1:end])
 
         for idx, url in enumerate(url_list):
-            print('\nURL:', str(idx))
-
+            print('\nURL:', str(idx + 1))
+            print(str(url))
             self.landsite.web_open(driver=self.driver, url=str(url))
             self.landsite.web_collect()
 
     def unit_collectURL(self):
         self.landsite.web_collectURL()
 
-test = CrawlTest(unit_all=True, url='https://new.land.naver.com/complexes/1?ms=37.548119,127.040638,17&a=APT:JGC:ABYG&e=RETAIL')
-# test.unit_apartment()
-# test.unit_school()
-# test.unit_tower()
-test.unit_all(start=1, end=2)
+test = CrawlTest(unit_all=True, driver_type='firefox', url='https://new.land.naver.com/complexes/1?ms=37.548119,127.040638,17&a=APT:JGC:ABYG&e=RETAIL')
 # test.unit_collectURL()
+test.unit_all(start=1, end=2)

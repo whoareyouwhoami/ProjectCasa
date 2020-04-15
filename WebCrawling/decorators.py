@@ -36,7 +36,7 @@ def clean_apartment(func_apartment):
         print('apartment_addr_province:', apartment_addr_province)
         print('apartment_addr_district:', apartment_addr_district)
         print('apartment_addr_town:', apartment_addr_town)
-        print('apartment_parking:', apartment_parking)
+        print('apartment_parking:', apartment_parking, '\n')
 
         return apartment_builder, apartment_build_year, apartment_build_month, apartment_floor_ratio, apartment_floor_min, apartment_floor_max, apartment_addr_province, apartment_addr_district, apartment_addr_town, apartment_parking
     return inner_function
@@ -44,7 +44,9 @@ def clean_apartment(func_apartment):
 def clean_school(func_school):
     def innner_function(*args, **kwargs):
         school_info = func_school(*args, **kwargs)
-        # name, dist, address, students
+
+        if school_info is False:
+            return False
 
         clean_students = school_info[3].split('명')[0]
 
@@ -66,7 +68,7 @@ def clean_school(func_school):
         print('school_addr_province:', school_addr_province)
         print('school_addr_district:', school_addr_district)
         print('school_addr_town:', school_addr_town)
-        print('school_students:', school_students)
+        print('school_students:', school_students, '\n')
 
         return school_name, school_dist, school_addr_province, school_addr_district, school_addr_town, school_students
     return innner_function
@@ -94,13 +96,16 @@ def clean_tower(func_tower):
         print('tower_bathroom:', tower_bathroom)
         print('tower_shower:', tower_shower)
         print('tower_size:', tower_size)
-        print('tower_household:', tower_household)
+        print('tower_household:', tower_household, '\n')
 
         return tower_id, tower_name, tower_bathroom, tower_shower, tower_size, tower_household
     return inner_function
 
 def clean_price(func_price):
     def inner_function(*args, **kwargs):
+        if func_price(*args, **kwargs) is False:
+            return False
+
         price_period, price_amount = func_price(*args, **kwargs)
 
         result = {'period': [],
