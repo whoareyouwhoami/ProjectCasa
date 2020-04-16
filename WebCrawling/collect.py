@@ -77,6 +77,7 @@ class WebCrawling:
 
             town_initial = self.driver.find_elements_by_css_selector("li.area_item")
             town_pos = 0
+            time.sleep(1)
             for j in range(0, len(town_initial)):
                 town_list = self.driver.find_elements_by_css_selector("li.area_item")
                 town = town_list[town_pos]
@@ -86,9 +87,13 @@ class WebCrawling:
 
                 # At this point, you will get a list of apartments
                 apartments_initial = self.driver.find_elements_by_css_selector("li.complex_item")
+                time.sleep(1)
                 apartment_pos = 0
                 for k in range(0, len(apartments_initial)):
+                    print('k:', k)
                     apartments_list = self.driver.find_elements_by_css_selector("li.complex_item")
+                    time.sleep(1)
+                    print('apartment list:', len(apartments_list))
                     apartment = apartments_list[apartment_pos]
                     apartment.click()
                     time.sleep(1)
@@ -123,7 +128,9 @@ class WebCrawling:
 
                 # Saving
                 collect_df = pd.DataFrame(web_dict)
+                print(collect_df)
                 collect_df.to_csv('apartment_url.csv', encoding='euc-kr')
+                print('saved')
                 town_pos += 1
 
             # Returning back to district list
