@@ -5,3 +5,4 @@ pandas
 psycopg2
 requests
 selenium
+PyYAML
