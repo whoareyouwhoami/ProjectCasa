@@ -1,12 +1,18 @@
 # Test Script
 import time
+import logging
 import pandas as pd
+import run_log
 import collect as WebCrawl
+
+logger = logging.getLogger('run_log')
 
 class CrawlTest:
     def __init__(self, unit_all=False, driver_type='chrome',url=None):
         if unit_all is False and url is None:
             raise ValueError("URL required")
+
+        logger.debug('----------------- TEST RUN -----------------')
 
         self.url = url
         self.initiate = WebCrawl.Initiate()
@@ -27,7 +33,6 @@ class CrawlTest:
     def unit_school(self):
         self.unit_initiate()
         self.landsite._school_info()
-
 
     def unit_all(self, start, end):
         if end < 1 or start < 1:

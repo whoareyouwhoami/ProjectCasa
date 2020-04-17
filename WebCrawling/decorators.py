@@ -1,5 +1,8 @@
 # Decorators
 import re
+import logging
+
+logger = logging.getLogger('run_log')
 
 def clean_address(address):
     addr = address.split(' ')[0:3]
@@ -9,7 +12,6 @@ def clean_address(address):
 def clean_apartment(func_apartment):
     def inner_function(*args, **kwargs):
         apartment_info = func_apartment(*args, **kwargs)
-        # 'build', 'builder', 'floor', 'floor_ratio', 'address', 'parking'
 
         clean_build = re.findall(r'[0-9]+', apartment_info[0])
         clean_floor = apartment_info[2].replace('층','').split('/')
@@ -27,16 +29,16 @@ def clean_apartment(func_apartment):
         apartment_addr_province, apartment_addr_district, apartment_addr_town = clean_address(apartment_info[4])
         apartment_builder = apartment_info[1]
 
-        print('apartment_builder:', apartment_builder)
-        print('apartment_build_year:', apartment_build_year)
-        print('apartment_build_month:', apartment_build_month)
-        print('apartment_floor_ratio:', apartment_floor_ratio)
-        print('apartment_floor_min:', apartment_floor_min)
-        print('apartment_floor_max:', apartment_floor_max)
-        print('apartment_addr_province:', apartment_addr_province)
-        print('apartment_addr_district:', apartment_addr_district)
-        print('apartment_addr_town:', apartment_addr_town)
-        print('apartment_parking:', apartment_parking, '\n')
+        logger.debug('apartment_builder: ' + apartment_builder)
+        logger.debug('apartment_build_year: ' + apartment_build_year)
+        logger.debug('apartment_build_month: ' + apartment_build_month)
+        logger.debug('apartment_floor_ratio: ' + apartment_floor_ratio)
+        logger.debug('apartment_floor_min: ' + apartment_floor_min)
+        logger.debug('apartment_floor_max: ' + apartment_floor_max)
+        logger.debug('apartment_addr_province: ' + apartment_addr_province)
+        logger.debug('apartment_addr_district: ' + apartment_addr_district)
+        logger.debug('apartment_addr_town: ' + apartment_addr_town)
+        logger.debug('apartment_parking: ' + apartment_parking)
 
         return apartment_builder, apartment_build_year, apartment_build_month, apartment_floor_ratio, apartment_floor_min, apartment_floor_max, apartment_addr_province, apartment_addr_district, apartment_addr_town, apartment_parking
     return inner_function
@@ -63,12 +65,12 @@ def clean_school(func_school):
         school_students = re.sub(r'[^\w]', '', clean_students)
         school_addr_province, school_addr_district, school_addr_town = clean_address(school_info[2])
 
-        print('school_name:', school_name)
-        print('school_dist:', school_dist)
-        print('school_addr_province:', school_addr_province)
-        print('school_addr_district:', school_addr_district)
-        print('school_addr_town:', school_addr_town)
-        print('school_students:', school_students, '\n')
+        logger.debug('school_name: ' + school_name)
+        logger.debug('school_dist: ' + school_dist)
+        logger.debug('school_addr_province: ' + school_addr_province)
+        logger.debug('school_addr_district: ' + school_addr_district)
+        logger.debug('school_addr_town: ' + school_addr_town)
+        logger.debug('school_students: ' + school_students)
 
         return school_name, school_dist, school_addr_province, school_addr_district, school_addr_town, school_students
     return innner_function
@@ -91,12 +93,12 @@ def clean_tower(func_tower):
         tower_size = tower_info[4]
         tower_household = re.search(r'[0-9]+', tower_info[5]).group()
 
-        print('tower_id:', tower_id)
-        print('tower_name:', tower_name)
-        print('tower_bathroom:', tower_bathroom)
-        print('tower_shower:', tower_shower)
-        print('tower_size:', tower_size)
-        print('tower_household:', tower_household, '\n')
+        logger.debug('tower_id: ' + str(tower_id))
+        logger.debug('tower_name: ' + tower_name)
+        logger.debug('tower_bathroom: ' + tower_bathroom)
+        logger.debug('tower_shower: ' + tower_shower)
+        logger.debug('tower_size: ' + tower_size)
+        logger.debug('tower_household: ' + tower_household)
 
         return tower_id, tower_name, tower_bathroom, tower_shower, tower_size, tower_household
     return inner_function

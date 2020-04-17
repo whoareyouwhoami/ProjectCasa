@@ -3,6 +3,7 @@
 ##################################
 import os
 import time
+import logging
 import pandas as pd
 from selenium import webdriver as wd
 from selenium.webdriver.chrome.options import Options as ChromeOptions
@@ -21,6 +22,8 @@ chrome_options.add_argument("--headless")
 gecko_options = FirefoxOptions()
 gecko_options.add_argument("--headless")
 
+# Log
+logger = logging.getLogger('run_log')
 
 class Initiate:
     def __init__(self):
@@ -67,21 +70,27 @@ class WebCrawling:
                 break
 
         district_initial = self.driver.find_elements_by_css_selector("li.area_item")
-        district_pos = 0
-        for i in range(0, len(district_initial)):
+        district_pos = 6
+        for i in range(6, 7):
             district_list = self.driver.find_elements_by_css_selector("li.area_item")
             district = district_list[district_pos]
             tmp_district_name = district.text
+
+            logger.debug('District name: ' + tmp_district_name)
+
             district.click()
             time.sleep(1)
 
             town_initial = self.driver.find_elements_by_css_selector("li.area_item")
-            town_pos = 0
+            town_pos = 7
             time.sleep(1)
-            for j in range(0, len(town_initial)):
+            for j in range(7, len(town_initial)):
                 town_list = self.driver.find_elements_by_css_selector("li.area_item")
                 town = town_list[town_pos]
                 tmp_town_name = town.text
+
+                logger.debug('Town name: ' + tmp_town_name)
+
                 town.click()
                 time.sleep(1)
 
@@ -90,9 +99,12 @@ class WebCrawling:
                 time.sleep(1)
                 apartment_pos = 0
                 for k in range(0, len(apartments_initial)):
-                    print('k:', k)
+                    logger.debug('k iteration: ' + str(k))
+
                     apartments_list = self.driver.find_elements_by_css_selector("li.complex_item")
                     time.sleep(1)
+
+                    logger.debug('Apartment length at iteration ' + str(k) + ': ' + str(len(apartments_list)))
                     print('apartment list:', len(apartments_list))
                     apartment = apartments_list[apartment_pos]
                     apartment.click()
@@ -107,18 +119,31 @@ class WebCrawling:
 
                     close_list = self.driver.find_element_by_css_selector("button.btn_close:nth-child(3)")
                     close_list.click()
-
-                    district_temp = self.driver.find_element_by_css_selector("span.area:nth-child(3)")
-                    district_temp.click()
                     time.sleep(1)
 
-                    district_temp_list = self.driver.find_elements_by_css_selector("li.area_item")
-                    district_temp_list[i].click()
-                    time.sleep(2)
+                    # Open province
+                    province_temp = self.driver.find_element_by_css_selector("span.area:nth-child(2)")
+                    time.sleep(1)
+                    province_temp.click()
+                    time.sleep(1)
 
+                    # Choose province
+                    province_temp_list = self.driver.find_elements_by_css_selector("li.area_item")
+                    time.sleep(1)
+                    province_temp_list[0].click()
+                    time.sleep(1)
+
+                    # Choose district
+                    district_temp_list = self.driver.find_elements_by_css_selector("li.area_item")
+                    time.sleep(1)
+                    district_temp_list[i].click()
+                    time.sleep(1)
+
+                    # Choose town
                     town_temp_list = self.driver.find_elements_by_css_selector("li.area_item")
+                    time.sleep(1)
                     town_temp_list[j].click()
-                    time.sleep(2)
+                    time.sleep(1)
 
                     apartment_pos += 1
 
@@ -130,7 +155,10 @@ class WebCrawling:
                 collect_df = pd.DataFrame(web_dict)
                 print(collect_df)
                 collect_df.to_csv('apartment_url.csv', encoding='euc-kr')
-                print('saved')
+
+                print('csv checkpoint at: ' + tmp_district_name + ' ' + tmp_town_name)
+                logger.debug('>>> csv checkpoint at: ' + tmp_district_name + ' ' + tmp_town_name)
+
                 town_pos += 1
 
             # Returning back to district list
@@ -142,6 +170,7 @@ class WebCrawling:
 
         print('-------------')
         print('Complete!')
+        self.driver.close()
 
     def web_collect(self):
         self._apartment_info()
@@ -156,9 +185,15 @@ class WebCrawling:
             time.sleep(1)
 
             get_price = self._tower_price()
-            print('price list:', get_price)
+
+            logger.debug('>>> Price list for: ' + area.text)
+            logger.debug(get_price)
 
             area_choice += 1
+
+        print('-------------')
+        print('Complete!')
+        self.driver.close()
 
     @dc.clean_apartment
     def _apartment_info(self):
@@ -173,12 +208,12 @@ class WebCrawling:
         apartment_address = self.driver.find_element_by_css_selector("p.address:nth-child(1)").text
         apartment_parking = self.driver.find_elements_by_css_selector("tbody:nth-child(2) > tr:nth-child(2) > td:nth-child(4)")[0].text
 
-        print('Apartment build date:', apartment_built)
-        print('Apartment construction company:', apartment_builder)
-        print('Apartment floor:', apartment_floor)
-        print('Apartment floor ratio:', apartment_floor_ratio)
-        print('Apartment parking:', apartment_parking)
-        print('Apartment address:', apartment_address, '\n')
+        logger.debug('Apartment build date: ' + apartment_built)
+        logger.debug('Apartment company: ' + apartment_builder)
+        logger.debug('Apartment floor: ' + apartment_floor)
+        logger.debug('Apartment floor ratio: ' + apartment_floor_ratio)
+        logger.debug('Apartment parking: ' + apartment_parking)
+        logger.debug('Apartment address: ' + apartment_address)
 
         return apartment_built, apartment_builder, apartment_floor, apartment_floor_ratio, apartment_address, apartment_parking
 
@@ -191,6 +226,7 @@ class WebCrawling:
         except:
             school_info = self.driver.find_element_by_css_selector(".tab_area_list > a:nth-child(3)")
             if school_info.text != '학군정보':
+                logger.error('>>> COULD NOT FIND SCHOOL INFORMATION!')
                 return False
 
         school_info.click()
@@ -214,10 +250,10 @@ class WebCrawling:
             else:
                 school_students = ''
 
-        print('Nearby school:', school_name)
-        print('Time to school:', school_dist)
-        print('School address:', school_address)
-        print('Number of students:', school_students, '\n')
+        logger.debug('School info: ' + school_name)
+        logger.debug('School dist: ' + school_dist)
+        logger.debug('School address: ' + school_address)
+        logger.debug('School students: ' + school_students)
 
         return school_name, school_dist, school_address, school_students
 
