@@ -70,8 +70,8 @@ class WebCrawling:
                 break
 
         district_initial = self.driver.find_elements_by_css_selector("li.area_item")
-        district_pos = 6
-        for i in range(6, 7):
+        district_pos = 0
+        for i in range(0, len(district_initial)):
             district_list = self.driver.find_elements_by_css_selector("li.area_item")
             district = district_list[district_pos]
             tmp_district_name = district.text
@@ -82,9 +82,9 @@ class WebCrawling:
             time.sleep(1)
 
             town_initial = self.driver.find_elements_by_css_selector("li.area_item")
-            town_pos = 7
+            town_pos = 0
             time.sleep(1)
-            for j in range(7, len(town_initial)):
+            for j in range(0, len(town_initial)):
                 town_list = self.driver.find_elements_by_css_selector("li.area_item")
                 town = town_list[town_pos]
                 tmp_town_name = town.text
