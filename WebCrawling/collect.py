@@ -81,7 +81,7 @@ class WebCrawling:
 
         district_initial = self.driver.find_elements_by_css_selector("li.area_item")
         district_pos = 0
-        for i in range(0, len(district_initial)):
+        for i in range(district_pos, len(district_initial)):
             district_list = self.driver.find_elements_by_css_selector("li.area_item")
             district = district_list[district_pos]
             tmp_district_name = district.text
@@ -94,7 +94,7 @@ class WebCrawling:
             town_initial = self.driver.find_elements_by_css_selector("li.area_item")
             town_pos = 0
             time.sleep(1)
-            for j in range(0, len(town_initial)):
+            for j in range(town_pos, len(town_initial)):
                 town_list = self.driver.find_elements_by_css_selector("li.area_item")
                 town = town_list[town_pos]
                 tmp_town_name = town.text
@@ -108,54 +108,58 @@ class WebCrawling:
                 apartments_initial = self.driver.find_elements_by_css_selector("li.complex_item")
                 time.sleep(1)
                 apartment_pos = 0
-                for k in range(0, len(apartments_initial)):
-                    logger.debug('k iteration: ' + str(k))
+                while apartment_pos < len(apartments_initial):
+                    try:
+                        logger.debug('k iteration: ' + str(apartment_pos))
 
-                    apartments_list = self.driver.find_elements_by_css_selector("li.complex_item")
-                    time.sleep(1)
+                        apartments_list = self.driver.find_elements_by_css_selector("li.complex_item")
+                        time.sleep(1)
 
-                    logger.debug('Apartment length at iteration ' + str(k) + ': ' + str(len(apartments_list)))
-                    print('apartment list:', len(apartments_list))
-                    apartment = apartments_list[apartment_pos]
-                    apartment.click()
-                    time.sleep(1)
+                        logger.debug('Apartment length at iteration ' + str(apartment_pos) + ': ' + str(len(apartments_list)))
+                        print('apartment list:', len(apartments_list))
 
-                    apartment_url = self.driver.current_url
-                    if apartment_url not in web_dict['url']:
-                        web_dict['city_name'].append(tmp_city_name)
-                        web_dict['district_name'].append(tmp_district_name)
-                        web_dict['town_name'].append(tmp_town_name)
-                        web_dict['url'].append(self.driver.current_url)
+                        apartment = apartments_list[apartment_pos]
+                        apartment.click()
+                        time.sleep(1)
 
-                    close_list = self.driver.find_element_by_css_selector("button.btn_close:nth-child(3)")
-                    close_list.click()
-                    time.sleep(1)
+                        apartment_url = self.driver.current_url
+                        if apartment_url not in web_dict['url']:
+                            web_dict['city_name'].append(tmp_city_name)
+                            web_dict['district_name'].append(tmp_district_name)
+                            web_dict['town_name'].append(tmp_town_name)
+                            web_dict['url'].append(self.driver.current_url)
 
-                    # Open province
-                    province_temp = self.driver.find_element_by_css_selector("span.area:nth-child(2)")
-                    time.sleep(1)
-                    province_temp.click()
-                    time.sleep(1)
+                        close_list = self.driver.find_element_by_css_selector("button.btn_close:nth-child(3)")
+                        close_list.click()
+                        time.sleep(1)
 
-                    # Choose province
-                    province_temp_list = self.driver.find_elements_by_css_selector("li.area_item")
-                    time.sleep(1)
-                    province_temp_list[0].click()
-                    time.sleep(1)
+                        # Open province
+                        province_temp = self.driver.find_element_by_css_selector("span.area:nth-child(2)")
+                        time.sleep(1)
+                        province_temp.click()
+                        time.sleep(1)
 
-                    # Choose district
-                    district_temp_list = self.driver.find_elements_by_css_selector("li.area_item")
-                    time.sleep(1)
-                    district_temp_list[i].click()
-                    time.sleep(1)
+                        # Choose province
+                        province_temp_list = self.driver.find_elements_by_css_selector("li.area_item")
+                        time.sleep(1)
+                        province_temp_list[0].click()
+                        time.sleep(1)
 
-                    # Choose town
-                    town_temp_list = self.driver.find_elements_by_css_selector("li.area_item")
-                    time.sleep(1)
-                    town_temp_list[j].click()
-                    time.sleep(1)
+                        # Choose district
+                        district_temp_list = self.driver.find_elements_by_css_selector("li.area_item")
+                        time.sleep(1)
+                        district_temp_list[i].click()
+                        time.sleep(1)
 
-                    apartment_pos += 1
+                        # Choose town
+                        town_temp_list = self.driver.find_elements_by_css_selector("li.area_item")
+                        time.sleep(1)
+                        town_temp_list[j].click()
+                        time.sleep(1)
+
+                        apartment_pos += 1
+                    except IndexError:
+                        apartment_pos = apartment_pos
 
                 town_click = self.driver.find_element_by_css_selector("a.area_select_item:nth-child(5)")
                 town_click.click()
