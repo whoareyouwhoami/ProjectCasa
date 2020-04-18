@@ -1,6 +1,7 @@
 # Test Script
 import time
 import logging
+from urllib.parse import urlparse
 import pandas as pd
 import run_log
 import collect as WebCrawl
@@ -51,12 +52,17 @@ class CrawlTest:
         for idx, url in enumerate(url_list):
             print('\nURL:', str(idx + 1))
             print(str(url))
+
+            url_parse = urlparse(url)
+            # Apartment ID
+            url_id = url_parse.path.split('/')[-1]
+
             self.landsite.web_open(driver=self.driver, url=str(url))
-            self.landsite.web_collect()
+            self.landsite.web_collect(url_id=url_id)
 
     def unit_collectURL(self):
         self.landsite.web_collectURL()
 
-test = CrawlTest(unit_all=False, driver_type='firefox', url='https://new.land.naver.com/complexes/1?ms=37.548119,127.040638,17&a=APT:JGC:ABYG&e=RETAIL')
-test.unit_collectURL()
-# test.unit_all(start=1, end=2)
+test = CrawlTest(unit_all=True, driver_type='firefox', url='https://new.land.naver.com/complexes/1?ms=37.548119,127.040638,17&a=APT:JGC:ABYG&e=RETAIL')
+# test.unit_collectURL()
+test.unit_all(start=1, end=50)

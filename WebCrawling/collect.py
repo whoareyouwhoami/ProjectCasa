@@ -5,6 +5,7 @@ import os
 import time
 import logging
 import pandas as pd
+from urllib.parse import urlparse, parse_qs
 from selenium import webdriver as wd
 from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
@@ -50,6 +51,15 @@ class WebCrawling:
         self.driver = driver
         self.url = url
         self.driver.get(self.url)
+        time.sleep(1)
+
+    def web_coordinate(self, url):
+        url_parse = urlparse(url)
+        query_dict = parse_qs(url_parse.query)
+
+        coordinate_query = query_dict['ms']
+        x, y, z = coordinate_query[0].split(',')
+        return x, y
 
     def web_collectURL(self):
         web_dict = {'city_name':[],
@@ -172,19 +182,36 @@ class WebCrawling:
         print('Complete!')
         self.driver.close()
 
-    def web_collect(self):
-        self._apartment_info()
-        self._school_info()
+    def web_collect(self, url_id):
+        apartment_id = url_id
+
+        apartment_information = self._apartment_info()
+        school_information = self._school_info()
+
+        combine_dict = {'apartment_id':apartment_id, **apartment_information, **school_information}
+
+        combine_df = pd.DataFrame(combine_dict, index=[0])
+        print(combine_df)
+
+        header = False if os.path.isfile('result.csv') else True
+        combine_df.to_csv('result.csv', mode='a', header=header)
 
         area_initial = self._tower_area()
         area_choice = 0
+
         for i in range(len(area_initial)):
             tower_area = self._tower_area()
             area = tower_area[area_choice]
             area.click()
             time.sleep(1)
 
-            get_price = self._tower_price()
+            get_price = self._tower_price(temp_id=apartment_id, temp_area=area.text)
+            if get_price is False:
+                return False
+
+            price_df = pd.DataFrame(get_price)
+            header_price = False if os.path.isfile('result_price.csv') else True
+            price_df.to_csv('result_price.csv', mode='a', header=header_price)
 
             logger.debug('>>> Price list for: ' + area.text)
             logger.debug(get_price)
@@ -193,7 +220,6 @@ class WebCrawling:
 
         print('-------------')
         print('Complete!')
-        self.driver.close()
 
     @dc.clean_apartment
     def _apartment_info(self):
@@ -204,18 +230,16 @@ class WebCrawling:
         apartment_built = self.driver.find_elements_by_css_selector("tbody:nth-child(2) > tr:nth-child(2) > td:nth-child(2)")[0].text
         apartment_builder = self.driver.find_elements_by_css_selector("tbody:nth-child(2) > tr:nth-child(4) > td:nth-child(2)")[0].text
         apartment_floor = self.driver.find_elements_by_css_selector("tbody:nth-child(2) > tr:nth-child(1) > td:nth-child(4)")[0].text
-        apartment_floor_ratio = self.driver.find_elements_by_css_selector("table:nth-child(2) > tbody:nth-child(2) > tr:nth-child(3) > td:nth-child(2)")[0].text
         apartment_address = self.driver.find_element_by_css_selector("p.address:nth-child(1)").text
         apartment_parking = self.driver.find_elements_by_css_selector("tbody:nth-child(2) > tr:nth-child(2) > td:nth-child(4)")[0].text
 
         logger.debug('Apartment build date: ' + apartment_built)
         logger.debug('Apartment company: ' + apartment_builder)
         logger.debug('Apartment floor: ' + apartment_floor)
-        logger.debug('Apartment floor ratio: ' + apartment_floor_ratio)
         logger.debug('Apartment parking: ' + apartment_parking)
         logger.debug('Apartment address: ' + apartment_address)
 
-        return apartment_built, apartment_builder, apartment_floor, apartment_floor_ratio, apartment_address, apartment_parking
+        return apartment_built, apartment_builder, apartment_floor, apartment_address, apartment_parking
 
     @dc.clean_school
     def _school_info(self):
@@ -224,10 +248,18 @@ class WebCrawling:
             if school_info.text != '학군정보':
                 school_info = self.driver.find_element_by_css_selector(".tab_area_list > a:nth-child(3)")
         except:
-            school_info = self.driver.find_element_by_css_selector(".tab_area_list > a:nth-child(3)")
-            if school_info.text != '학군정보':
-                logger.error('>>> COULD NOT FIND SCHOOL INFORMATION!')
-                return False
+            try:
+                school_info = self.driver.find_element_by_css_selector(".tab_area_list > a:nth-child(3)")
+                if school_info.text != '학군정보':
+                    raise Exception
+            except:
+                try:
+                    school_info = self.driver.find_element_by_css_selector(".tab_area_list > a:nth-child(2)").text
+                    if school_info.text != '학군정보':
+                        logger.error('>>> COULD NOT FIND SCHOOL INFORMATION!')
+                        return False
+                except:
+                    return False
 
         school_info.click()
         time.sleep(1)
@@ -258,7 +290,7 @@ class WebCrawling:
         return school_name, school_dist, school_address, school_students
 
     @dc.clean_price
-    def _tower_price(self):
+    def _tower_price(self, temp_id, temp_area):
         check_buy = self.driver.find_element_by_css_selector('#marketPriceTab1')
 
         if check_buy.text != '매매':
@@ -283,7 +315,7 @@ class WebCrawling:
             list_period.append(txt[:7])
             list_amount.append(txt[9:])
 
-        return list_period, list_amount
+        return list_period, list_amount, temp_id, temp_area
 
     def _tower_area(self):
         price = self.driver.find_element_by_css_selector('.tab_area_list > a:nth-child(2)')
