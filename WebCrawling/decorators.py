@@ -162,7 +162,7 @@ def clean_price(func_price):
                 final_amount = int(price_intv[lim] * decimal)
             else:
                 try:
-                    decimal = float(clean_amount.replace(',', '.'))
+                    decimal = float(amount_value.replace(',', '.'))
                     final_amount = int(10000000 * decimal)
                 except:
                     final_amount  = 0
