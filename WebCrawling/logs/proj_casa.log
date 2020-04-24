@@ -1,0 +1,168 @@
+2020-04-19 14:36:38,049 DEBUG: ----------------- TEST RUN ----------------- in run_test.py:15
+2020-04-19 14:36:46,062 DEBUG: Apartment build date: 2020년 09월 in collect.py:211
+2020-04-19 14:36:46,062 DEBUG: Apartment company: 삼성물산(주) in collect.py:212
+2020-04-19 14:36:46,062 DEBUG: Apartment floor: 7층/35층 in collect.py:213
+2020-04-19 14:36:46,062 DEBUG: Apartment floor ratio: 249% in collect.py:214
+2020-04-19 14:36:46,063 DEBUG: Apartment parking: 1.71대 in collect.py:215
+2020-04-19 14:36:46,063 DEBUG: Apartment address: 서울시 강남구 개포동 656 in collect.py:216
+2020-04-19 14:36:46,063 DEBUG: apartment_builder: 삼성물산(주) in decorators.py:32
+2020-04-19 14:36:46,063 DEBUG: apartment_build_year: 2020 in decorators.py:33
+2020-04-19 14:36:46,064 DEBUG: apartment_build_month: 09 in decorators.py:34
+2020-04-19 14:36:46,064 DEBUG: apartment_floor_ratio: 249 in decorators.py:35
+2020-04-19 14:36:46,064 DEBUG: apartment_floor_min: 7 in decorators.py:36
+2020-04-19 14:36:46,065 DEBUG: apartment_floor_max: 35 in decorators.py:37
+2020-04-19 14:36:46,065 DEBUG: apartment_addr_province: 서울시 in decorators.py:38
+2020-04-19 14:36:46,065 DEBUG: apartment_addr_district: 강남구 in decorators.py:39
+2020-04-19 14:36:46,066 DEBUG: apartment_addr_town: 개포동 in decorators.py:40
+2020-04-19 14:36:46,066 DEBUG: apartment_parking: 1.71 in decorators.py:41
+2020-04-19 14:36:47,445 DEBUG: School info: 서울구룡초등학교 in collect.py:253
+2020-04-19 14:36:47,445 DEBUG: School dist: 도보로 2분 in collect.py:254
+2020-04-19 14:36:47,445 DEBUG: School address: 서울특별시 강남구 개포로 263 in collect.py:255
+2020-04-19 14:36:47,445 DEBUG: School students: 492명(남 268명, 여 224명) in collect.py:256
+2020-04-19 14:36:47,446 DEBUG: school_name: 서울구룡초등학교 in decorators.py:68
+2020-04-19 14:36:47,446 DEBUG: school_dist: 2 in decorators.py:69
+2020-04-19 14:36:47,446 DEBUG: school_addr_province: 서울특별시 in decorators.py:70
+2020-04-19 14:36:47,446 DEBUG: school_addr_district: 강남구 in decorators.py:71
+2020-04-19 14:36:47,446 DEBUG: school_addr_town: 개포로 in decorators.py:72
+2020-04-19 14:36:47,446 DEBUG: school_students: 492 in decorators.py:73
+2020-04-19 14:36:52,955 DEBUG: >>> Price list for: 74㎡ in collect.py:189
+2020-04-19 14:36:52,955 DEBUG: {'period': ['2019.07', '2019.06'], 'year': [2019, 2019], 'month': [7, 6], 'amount_original': ['11억 3,446', '10억 9,954'], 'amount': [1134460000, 1099540000]} in collect.py:190
+2020-04-19 14:36:56,350 DEBUG: >>> Price list for: 85B㎡ in collect.py:189
+2020-04-19 14:36:56,351 DEBUG: {'period': ['2019.06'], 'year': [2019], 'month': [6], 'amount_original': ['12억 9,928'], 'amount': [1299280000]} in collect.py:190
+2020-04-19 14:36:59,886 DEBUG: >>> Price list for: 86A㎡ in collect.py:189
+2020-04-19 14:36:59,887 DEBUG: {'period': ['2019.07', '2019.01', '2018.05'], 'year': [2019, 2019, 2018], 'month': [7, 1, 5], 'amount_original': ['14억 7,405', '13억 9,339', '12억 7,000'], 'amount': [1474050000, 1393390000, 1270000000]} in collect.py:190
+2020-04-19 14:37:03,384 DEBUG: >>> Price list for: 101㎡ in collect.py:189
+2020-04-19 14:37:03,384 DEBUG: {'period': ['2019.09', '2019.07', '2018.08'], 'year': [2019, 2019, 2018], 'month': [9, 7, 8], 'amount_original': ['19억 6,551', '17억 5,151', '18억 278'], 'amount': [1965510000, 1751510000, 1827799999]} in collect.py:190
+2020-04-19 14:37:06,983 DEBUG: >>> Price list for: 115A㎡ in collect.py:189
+2020-04-19 14:37:06,984 DEBUG: {'period': ['2019.10', '2019.08', '2019.05', '2018.07'], 'year': [2019, 2019, 2019, 2018], 'month': [10, 8, 5, 7], 'amount_original': ['19억 5,296', '20억 3,660', '17억 1,572', '16억 3,122'], 'amount': [1952959999, 2036600000, 1715720000, 1631220000]} in collect.py:190
+2020-04-19 14:37:10,312 DEBUG: >>> Price list for: 115B㎡ in collect.py:189
+2020-04-19 14:37:10,312 DEBUG: False in collect.py:190
+2020-04-19 14:37:13,611 DEBUG: >>> Price list for: 116C㎡ in collect.py:189
+2020-04-19 14:37:13,612 DEBUG: False in collect.py:190
+2020-04-19 14:37:16,944 DEBUG: >>> Price list for: 116D㎡ in collect.py:189
+2020-04-19 14:37:16,944 DEBUG: False in collect.py:190
+2020-04-19 14:36:38,049 DEBUG: ----------------- TEST RUN ----------------- in run_test.py:15
+2020-04-19 14:36:46,062 DEBUG: Apartment build date: 2020년 09월 in collect.py:211
+2020-04-19 14:36:46,062 DEBUG: Apartment company: 삼성물산(주) in collect.py:212
+2020-04-19 14:36:46,062 DEBUG: Apartment floor: 7층/35층 in collect.py:213
+2020-04-19 14:36:46,062 DEBUG: Apartment floor ratio: 249% in collect.py:214
+2020-04-19 14:36:46,063 DEBUG: Apartment parking: 1.71대 in collect.py:215
+2020-04-19 14:36:46,063 DEBUG: Apartment address: 서울시 강남구 개포동 656 in collect.py:216
+2020-04-19 14:36:46,063 DEBUG: apartment_builder: 삼성물산(주) in decorators.py:32
+2020-04-19 14:36:46,063 DEBUG: apartment_build_year: 2020 in decorators.py:33
+2020-04-19 14:36:46,064 DEBUG: apartment_build_month: 09 in decorators.py:34
+2020-04-19 14:36:46,064 DEBUG: apartment_floor_ratio: 249 in decorators.py:35
+2020-04-19 14:36:46,064 DEBUG: apartment_floor_min: 7 in decorators.py:36
+2020-04-19 14:36:46,065 DEBUG: apartment_floor_max: 35 in decorators.py:37
+2020-04-19 14:36:46,065 DEBUG: apartment_addr_province: 서울시 in decorators.py:38
+2020-04-19 14:36:46,065 DEBUG: apartment_addr_district: 강남구 in decorators.py:39
+2020-04-19 14:36:46,066 DEBUG: apartment_addr_town: 개포동 in decorators.py:40
+2020-04-19 14:36:46,066 DEBUG: apartment_parking: 1.71 in decorators.py:41
+2020-04-19 14:36:47,445 DEBUG: School info: 서울구룡초등학교 in collect.py:253
+2020-04-19 14:36:47,445 DEBUG: School dist: 도보로 2분 in collect.py:254
+2020-04-19 14:36:47,445 DEBUG: School address: 서울특별시 강남구 개포로 263 in collect.py:255
+2020-04-19 14:36:47,445 DEBUG: School students: 492명(남 268명, 여 224명) in collect.py:256
+2020-04-19 14:36:47,446 DEBUG: school_name: 서울구룡초등학교 in decorators.py:68
+2020-04-19 14:36:47,446 DEBUG: school_dist: 2 in decorators.py:69
+2020-04-19 14:36:47,446 DEBUG: school_addr_province: 서울특별시 in decorators.py:70
+2020-04-19 14:36:47,446 DEBUG: school_addr_district: 강남구 in decorators.py:71
+2020-04-19 14:36:47,446 DEBUG: school_addr_town: 개포로 in decorators.py:72
+2020-04-19 14:36:47,446 DEBUG: school_students: 492 in decorators.py:73
+2020-04-19 14:36:52,955 DEBUG: >>> Price list for: 74㎡ in collect.py:189
+2020-04-19 14:36:52,955 DEBUG: {'period': ['2019.07', '2019.06'], 'year': [2019, 2019], 'month': [7, 6], 'amount_original': ['11억 3,446', '10억 9,954'], 'amount': [1134460000, 1099540000]} in collect.py:190
+2020-04-19 14:36:56,350 DEBUG: >>> Price list for: 85B㎡ in collect.py:189
+2020-04-19 14:36:56,351 DEBUG: {'period': ['2019.06'], 'year': [2019], 'month': [6], 'amount_original': ['12억 9,928'], 'amount': [1299280000]} in collect.py:190
+2020-04-19 14:36:59,886 DEBUG: >>> Price list for: 86A㎡ in collect.py:189
+2020-04-19 14:36:59,887 DEBUG: {'period': ['2019.07', '2019.01', '2018.05'], 'year': [2019, 2019, 2018], 'month': [7, 1, 5], 'amount_original': ['14억 7,405', '13억 9,339', '12억 7,000'], 'amount': [1474050000, 1393390000, 1270000000]} in collect.py:190
+2020-04-19 14:37:03,384 DEBUG: >>> Price list for: 101㎡ in collect.py:189
+2020-04-19 14:37:03,384 DEBUG: {'period': ['2019.09', '2019.07', '2018.08'], 'year': [2019, 2019, 2018], 'month': [9, 7, 8], 'amount_original': ['19억 6,551', '17억 5,151', '18억 278'], 'amount': [1965510000, 1751510000, 1827799999]} in collect.py:190
+2020-04-19 14:37:06,983 DEBUG: >>> Price list for: 115A㎡ in collect.py:189
+2020-04-19 14:37:06,984 DEBUG: {'period': ['2019.10', '2019.08', '2019.05', '2018.07'], 'year': [2019, 2019, 2019, 2018], 'month': [10, 8, 5, 7], 'amount_original': ['19억 5,296', '20억 3,660', '17억 1,572', '16억 3,122'], 'amount': [1952959999, 2036600000, 1715720000, 1631220000]} in collect.py:190
+2020-04-19 14:37:10,312 DEBUG: >>> Price list for: 115B㎡ in collect.py:189
+2020-04-19 14:37:10,312 DEBUG: False in collect.py:190
+2020-04-19 14:37:13,611 DEBUG: >>> Price list for: 116C㎡ in collect.py:189
+2020-04-19 14:37:13,612 DEBUG: False in collect.py:190
+2020-04-19 14:37:16,944 DEBUG: >>> Price list for: 116D㎡ in collect.py:189
+2020-04-19 14:37:16,944 DEBUG: False in collect.py:190
+collect.py:214
+2020-04-19 14:36:46,063 DEBUG: Apartment parking: 1.71대 in collect.py:215
+2020-04-19 14:36:46,063 DEBUG: Apartment address: 서울시 강남구 개포동 656 in collect.py:216
+2020-04-19 14:36:46,063 DEBUG: apartment_builder: 삼성물산(주) in decorators.py:32
+2020-04-19 14:36:46,063 DEBUG: apartment_build_year: 2020 in decorators.py:33
+2020-04-19 14:36:46,064 DEBUG: apartment_build_month: 09 in decorators.py:34
+2020-04-19 14:36:46,064 DEBUG: apartment_floor_ratio: 249 in decorators.py:35
+2020-04-19 14:36:46,064 DEBUG: apartment_floor_min: 7 in decorators.py:36
+2020-04-19 14:36:46,065 DEBUG: apartment_floor_max: 35 in decorators.py:37
+2020-04-19 14:36:46,065 DEBUG: apartment_addr_province: 서울시 in decorators.py:38
+2020-04-19 14:36:46,065 DEBUG: apartment_addr_district: 강남구 in decorators.py:39
+2020-04-19 14:36:46,066 DEBUG: apartment_addr_town: 개포동 in decorators.py:40
+2020-04-19 14:36:46,066 DEBUG: apartment_parking: 1.71 in decorators.py:41
+2020-04-19 14:36:47,445 DEBUG: School info: 서울구룡초등학교 in collect.py:253
+2020-04-19 14:36:47,445 DEBUG: School dist: 도보로 2분 in collect.py:254
+2020-04-19 14:36:47,445 DEBUG: School address: 서울특별시 강남구 개포로 263 in collect.py:255
+2020-04-19 14:36:47,445 DEBUG: School students: 492명(남 268명, 여 224명) in collect.py:256
+2020-04-19 14:36:47,446 DEBUG: school_name: 서울구룡초등학교 in decorators.py:68
+2020-04-19 14:36:47,446 DEBUG: school_dist: 2 in decorators.py:69
+2020-04-19 14:36:47,446 DEBUG: school_addr_province: 서울특별시 in decorators.py:70
+2020-04-19 14:36:47,446 DEBUG: school_addr_district: 강남구 in decorators.py:71
+2020-04-19 14:36:47,446 DEBUG: school_addr_town: 개포로 in decorators.py:72
+2020-04-19 14:36:47,446 DEBUG: school_students: 492 in decorators.py:73
+2020-04-19 14:36:52,955 DEBUG: >>> Price list for: 74㎡ in collect.py:189
+2020-04-19 14:36:52,955 DEBUG: {'period': ['2019.07', '2019.06'], 'year': [2019, 2019], 'month': [7, 6], 'amount_original': ['11억 3,446', '10억 9,954'], 'amount': [1134460000, 1099540000]} in collect.py:190
+2020-04-19 14:36:56,350 DEBUG: >>> Price list for: 85B㎡ in collect.py:189
+2020-04-19 14:36:56,351 DEBUG: {'period': ['2019.06'], 'year': [2019], 'month': [6], 'amount_original': ['12억 9,928'], 'amount': [1299280000]} in collect.py:190
+2020-04-19 14:36:59,886 DEBUG: >>> Price list for: 86A㎡ in collect.py:189
+2020-04-19 14:36:59,887 DEBUG: {'period': ['2019.07', '2019.01', '2018.05'], 'year': [2019, 2019, 2018], 'month': [7, 1, 5], 'amount_original': ['14억 7,405', '13억 9,339', '12억 7,000'], 'amount': [1474050000, 1393390000, 1270000000]} in collect.py:190
+2020-04-19 14:37:03,384 DEBUG: >>> Price list for: 101㎡ in collect.py:189
+2020-04-19 14:37:03,384 DEBUG: {'period': ['2019.09', '2019.07', '2018.08'], 'year': [2019, 2019, 2018], 'month': [9, 7, 8], 'amount_original': ['19억 6,551', '17억 5,151', '18억 278'], 'amount': [1965510000, 1751510000, 1827799999]} in collect.py:190
+2020-04-19 14:37:06,983 DEBUG: >>> Price list for: 115A㎡ in collect.py:189
+2020-04-19 14:37:06,984 DEBUG: {'period': ['2019.10', '2019.08', '2019.05', '2018.07'], 'year': [2019, 2019, 2019, 2018], 'month': [10, 8, 5, 7], 'amount_original': ['19억 5,296', '20억 3,660', '17억 1,572', '16억 3,122'], 'amount': [1952959999, 2036600000, 1715720000, 1631220000]} in collect.py:190
+2020-04-19 14:37:10,312 DEBUG: >>> Price list for: 115B㎡ in collect.py:189
+2020-04-19 14:37:10,312 DEBUG: False in collect.py:190
+2020-04-19 14:37:13,611 DEBUG: >>> Price list for: 116C㎡ in collect.py:189
+2020-04-19 14:37:13,612 DEBUG: False in collect.py:190
+2020-04-19 14:37:16,944 DEBUG: >>> Price list for: 116D㎡ in collect.py:189
+2020-04-19 14:37:16,944 DEBUG: False in collect.py:190
+                                              2020-04-19 14:36:38,049 DEBUG: ----------------- TEST RUN ----------------- in run_test.py:15
+2020-04-19 14:36:46,062 DEBUG: Apartment build date: 2020년 09월 in collect.py:211
+2020-04-19 14:36:46,062 DEBUG: Apartment company: 삼성물산(주) in collect.py:212
+2020-04-19 14:36:46,062 DEBUG: Apartment floor: 7층/35층 in collect.py:213
+2020-04-19 14:36:46,062 DEBUG: Apartment floor ratio: 249% in collect.py:214
+2020-04-19 14:36:46,063 DEBUG: Apartment parking: 1.71대 in collect.py:215
+2020-04-19 14:36:46,063 DEBUG: Apartment address: 서울시 강남구 개포동 656 in collect.py:216
+2020-04-19 14:36:46,063 DEBUG: apartment_builder: 삼성물산(주) in decorators.py:32
+2020-04-19 14:36:46,063 DEBUG: apartment_build_year: 2020 in decorators.py:33
+2020-04-19 14:36:46,064 DEBUG: apartment_build_month: 09 in decorators.py:34
+2020-04-19 14:36:46,064 DEBUG: apartment_floor_ratio: 249 in decorators.py:35
+2020-04-19 14:36:46,064 DEBUG: apartment_floor_min: 7 in decorators.py:36
+2020-04-19 14:36:46,065 DEBUG: apartment_floor_max: 35 in decorators.py:37
+2020-04-19 14:36:46,065 DEBUG: apartment_addr_province: 서울시 in decorators.py:38
+2020-04-19 14:36:46,065 DEBUG: apartment_addr_district: 강남구 in decorators.py:39
+2020-04-19 14:36:46,066 DEBUG: apartment_addr_town: 개포동 in decorators.py:40
+2020-04-19 14:36:46,066 DEBUG: apartment_parking: 1.71 in decorators.py:41
+2020-04-19 14:36:47,445 DEBUG: School info: 서울구룡초등학교 in collect.py:253
+2020-04-19 14:36:47,445 DEBUG: School dist: 도보로 2분 in collect.py:254
+2020-04-19 14:36:47,445 DEBUG: School address: 서울특별시 강남구 개포로 263 in collect.py:255
+2020-04-19 14:36:47,445 DEBUG: School students: 492명(남 268명, 여 224명) in collect.py:256
+2020-04-19 14:36:47,446 DEBUG: school_name: 서울구룡초등학교 in decorators.py:68
+2020-04-19 14:36:47,446 DEBUG: school_dist: 2 in decorators.py:69
+2020-04-19 14:36:47,446 DEBUG: school_addr_province: 서울특별시 in decorators.py:70
+2020-04-19 14:36:47,446 DEBUG: school_addr_district: 강남구 in decorators.py:71
+2020-04-19 14:36:47,446 DEBUG: school_addr_town: 개포로 in decorators.py:72
+2020-04-19 14:36:47,446 DEBUG: school_students: 492 in decorators.py:73
+2020-04-19 14:36:52,955 DEBUG: >>> Price list for: 74㎡ in collect.py:189
+2020-04-19 14:36:52,955 DEBUG: {'period': ['2019.07', '2019.06'], 'year': [2019, 2019], 'month': [7, 6], 'amount_original': ['11억 3,446', '10억 9,954'], 'amount': [1134460000, 1099540000]} in collect.py:190
+2020-04-19 14:36:56,350 DEBUG: >>> Price list for: 85B㎡ in collect.py:189
+2020-04-19 14:36:56,351 DEBUG: {'period': ['2019.06'], 'year': [2019], 'month': [6], 'amount_original': ['12억 9,928'], 'amount': [1299280000]} in collect.py:190
+2020-04-19 14:36:59,886 DEBUG: >>> Price list for: 86A㎡ in collect.py:189
+2020-04-19 14:36:59,887 DEBUG: {'period': ['2019.07', '2019.01', '2018.05'], 'year': [2019, 2019, 2018], 'month': [7, 1, 5], 'amount_original': ['14억 7,405', '13억 9,339', '12억 7,000'], 'amount': [1474050000, 1393390000, 1270000000]} in collect.py:190
+2020-04-19 14:37:03,384 DEBUG: >>> Price list for: 101㎡ in collect.py:189
+2020-04-19 14:37:03,384 DEBUG: {'period': ['2019.09', '2019.07', '2018.08'], 'year': [2019, 2019, 2018], 'month': [9, 7, 8], 'amount_original': ['19억 6,551', '17억 5,151', '18억 278'], 'amount': [1965510000, 1751510000, 1827799999]} in collect.py:190
+2020-04-19 14:37:06,983 DEBUG: >>> Price list for: 115A㎡ in collect.py:189
+2020-04-19 14:37:06,984 DEBUG: {'period': ['2019.10', '2019.08', '2019.05', '2018.07'], 'year': [2019, 2019, 2019, 2018], 'month': [10, 8, 5, 7], 'amount_original': ['19억 5,296', '20억 3,660', '17억 1,572', '16억 3,122'], 'amount': [1952959999, 2036600000, 1715720000, 1631220000]} in collect.py:190
+2020-04-19 14:37:10,312 DEBUG: >>> Price list for: 115B㎡ in collect.py:189
+2020-04-19 14:37:10,312 DEBUG: False in collect.py:190
+2020-04-19 14:37:13,611 DEBUG: >>> Price list for: 116C㎡ in collect.py:189
+2020-04-19 14:37:13,612 DEBUG: False in collect.py:190
+2020-04-19 14:37:16,944 DEBUG: >>> Price list for: 116D㎡ in collect.py:189
+2020-04-19 14:37:16,944 DEBUG: False in collect.py:190
