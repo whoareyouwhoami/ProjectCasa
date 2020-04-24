@@ -48,21 +48,23 @@ class CrawlTest:
             return False
 
         url_list = list(file['url'][start - 1:end])
-
+        x = start
         for idx, url in enumerate(url_list):
-            print('\nURL:', str(idx + 1))
+            print('\nURL:', str(x))
             print(str(url))
 
             url_parse = urlparse(url)
             # Apartment ID
             url_id = url_parse.path.split('/')[-1]
 
-            self.landsite.web_open(driver=self.driver, url=str(url))
+            self.landsite.web_open(driver=self.driver, url= str(url))
             self.landsite.web_collect(url_id=url_id, id=idx)
+
+            x += 1
 
     def unit_collectURL(self):
         self.landsite.web_collectURL()
 
 test = CrawlTest(unit_all=True, driver_type='firefox', url='https://new.land.naver.com/complexes/1?ms=37.548119,127.040638,17&a=APT:JGC:ABYG&e=RETAIL')
 # test.unit_collectURL()
-test.unit_all(start=20, end=50)
+test.unit_all(start=6172, end=8208)
