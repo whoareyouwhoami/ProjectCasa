@@ -58,11 +58,19 @@ class CrawlTest:
             url_id = url_parse.path.split('/')[-1]
 
             self.landsite.web_open(driver=self.driver, url=str(url))
+<<<<<<< HEAD
             self.landsite.web_collect(url_id=url_id)
+=======
+            self.landsite.web_collect(url_id=url_id, id=idx)
+>>>>>>> 6ac1fb8afdeb6bacad6f957a1aff4f79b0921535
 
     def unit_collectURL(self):
         self.landsite.web_collectURL()
 
 test = CrawlTest(unit_all=True, driver_type='firefox', url='https://new.land.naver.com/complexes/1?ms=37.548119,127.040638,17&a=APT:JGC:ABYG&e=RETAIL')
 # test.unit_collectURL()
+<<<<<<< HEAD
 test.unit_all(start=1, end=50)
+=======
+test.unit_all(start=20, end=50)
+>>>>>>> 6ac1fb8afdeb6bacad6f957a1aff4f79b0921535

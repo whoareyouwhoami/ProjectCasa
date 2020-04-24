@@ -1,9 +1,18 @@
 # Decorators
 import re
 import logging
+<<<<<<< HEAD
 
 logger = logging.getLogger('run_log')
 
+=======
+import database
+
+logger = logging.getLogger('run_log')
+
+temp_db = database.CasaDB()
+
+>>>>>>> 6ac1fb8afdeb6bacad6f957a1aff4f79b0921535
 def clean_address(address):
     addr = address.split(' ')[0:3]
     province, district, state  = addr[0], addr[1], addr[2]
@@ -26,7 +35,11 @@ def clean_apartment(func_apartment):
         apartment_addr_province, apartment_addr_district, apartment_addr_town = clean_address(apartment_info[3])
         apartment_builder = apartment_info[1]
         if clean_parking == '-':
+<<<<<<< HEAD
             apartment_parking = ''
+=======
+            apartment_parking = 0.0
+>>>>>>> 6ac1fb8afdeb6bacad6f957a1aff4f79b0921535
         else:
             apartment_parking = clean_parking
 
@@ -38,19 +51,32 @@ def clean_apartment(func_apartment):
         logger.debug('apartment_addr_province: ' + apartment_addr_province)
         logger.debug('apartment_addr_district: ' + apartment_addr_district)
         logger.debug('apartment_addr_town: ' + apartment_addr_town)
+<<<<<<< HEAD
         logger.debug('apartment_parking: ' + apartment_parking)
 
         apartment_dict = {'apartment_builder': apartment_builder,
+=======
+        logger.debug('apartment_parking: ' + str(apartment_parking))
+
+        apartment_dict = {'apartment_addr_town': apartment_addr_town,
+                          'apartment_builder': apartment_builder,
+>>>>>>> 6ac1fb8afdeb6bacad6f957a1aff4f79b0921535
                           'apartment_build_year': apartment_build_year,
                           'apartment_build_month': apartment_build_month,
                           'apartment_floor_min': apartment_floor_min,
                           'apartment_floor_max': apartment_floor_max,
+<<<<<<< HEAD
                           'apartment_addr_province': apartment_addr_province,
                           'apartment_addr_district': apartment_addr_district,
                           'apartment_addr_town': apartment_addr_town,
                           'apartment_parking': apartment_parking}
 
         return apartment_dict
+=======
+                          'apartment_parking': apartment_parking}
+
+        return apartment_addr_district, apartment_dict
+>>>>>>> 6ac1fb8afdeb6bacad6f957a1aff4f79b0921535
     return inner_function
 
 def clean_school(func_school):
@@ -59,9 +85,13 @@ def clean_school(func_school):
 
         if school_info is False:
             school_dict = {'school_name': '',
+<<<<<<< HEAD
                            'school_dist': '',
                            'school_addr_province': '',
                            'school_addr_district': '',
+=======
+                           'school_dist': 0,
+>>>>>>> 6ac1fb8afdeb6bacad6f957a1aff4f79b0921535
                            'school_addr_town': '',
                            'school_students': ''}
             return school_dict
@@ -89,9 +119,13 @@ def clean_school(func_school):
         logger.debug('school_students: ' + school_students)
 
         school_dict = {'school_name': school_name,
+<<<<<<< HEAD
                        'school_dist': school_dist,
                        'school_addr_province': school_addr_province,
                        'school_addr_district': school_addr_district,
+=======
+                       'school_dist': int(school_dist),
+>>>>>>> 6ac1fb8afdeb6bacad6f957a1aff4f79b0921535
                        'school_addr_town': school_addr_town,
                        'school_students': school_students}
 
@@ -144,6 +178,10 @@ def clean_price(func_price):
         price_intv = {'천': 10000000, '억': 100000000}
 
         for idx, period in enumerate(price_period):
+<<<<<<< HEAD
+=======
+            result = {}
+>>>>>>> 6ac1fb8afdeb6bacad6f957a1aff4f79b0921535
             clean_period = period.split('.')
             price_year = clean_period[0]
             price_month = clean_period[1]
@@ -158,7 +196,18 @@ def clean_price(func_price):
                 lim = False
 
             if lim is not False and lim in price_intv:
+<<<<<<< HEAD
                 decimal = float(clean_amount.replace(lim, '.'))
+=======
+                amount_replace = clean_amount.replace(lim, '.')
+                temp_idx = amount_replace.find('.')
+                temp_check = len(amount_replace[temp_idx+1:])
+                if temp_check == 3:
+                    decimal = float(amount_replace[:temp_idx+1] + '0' + amount_replace[temp_idx+1:])
+                else:
+                    decimal = float(clean_amount.replace(lim, '.'))
+
+>>>>>>> 6ac1fb8afdeb6bacad6f957a1aff4f79b0921535
                 final_amount = int(price_intv[lim] * decimal)
             else:
                 try:
@@ -167,6 +216,7 @@ def clean_price(func_price):
                 except:
                     final_amount  = 0
 
+<<<<<<< HEAD
             result['apartment_id'].append(temp_id)
             result['area'].append(temp_area)
             result['period'].append(period)
@@ -174,6 +224,19 @@ def clean_price(func_price):
             result['month'].append(int(price_month))
             result['amount_original'].append(amount_value)
             result['amount'].append(final_amount)
+=======
+
+            result['apartment_id'] = temp_id
+            result['area'] = temp_area
+            result['period'] = period
+            result['year'] = int(price_year)
+            result['month'] = int(price_month)
+            result['amount'] = final_amount
+            result['amount_original'] = amount_value
+
+            select_price = temp_db.db_insert(type='price')
+            temp_db.db_execute(select_price, type='insert', data=result)
+>>>>>>> 6ac1fb8afdeb6bacad6f957a1aff4f79b0921535
 
         return result
     return inner_function

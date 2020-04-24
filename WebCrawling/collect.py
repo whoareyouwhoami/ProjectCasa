@@ -10,6 +10,12 @@ from selenium import webdriver as wd
 from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
 import decorators as dc
+<<<<<<< HEAD
+=======
+import database as db
+
+casa = db.CasaDB()
+>>>>>>> 6ac1fb8afdeb6bacad6f957a1aff4f79b0921535
 
 # Display options
 pd.set_option("display.max_columns", 2000)
@@ -186,6 +192,7 @@ class WebCrawling:
         print('Complete!')
         self.driver.close()
 
+<<<<<<< HEAD
     def web_collect(self, url_id):
         apartment_id = url_id
 
@@ -224,6 +231,64 @@ class WebCrawling:
 
         print('-------------')
         print('Complete!')
+=======
+    def web_collect(self, url_id, id):
+        logger.debug('Collecting: ' + str(url_id) + ' at index: ' + str(id))
+
+        apartment_id = url_id
+
+        district_name, apartment_information = self._apartment_info()
+        school_information = self._school_info()
+
+        combine_apartment = {'apartment_id':apartment_id, **apartment_information}
+        combine_school = {'apartment_id':apartment_id, **school_information}
+
+        # Check if district exist in the database
+        select_district = casa.db_select(type='district', val=district_name)
+        check_district = casa.db_execute(query=select_district, type='select')
+
+        if check_district is not False:
+            # Query
+            insert_apartment = casa.db_insert(type='apartment', val=district_name)
+            insert_school = casa.db_insert(type='school', val=district_name)
+
+            # Inserting to database
+            try:
+                casa.db_execute(query=insert_apartment, type='insert', data=combine_apartment)
+                logger.debug('Successfully inserted -> apartment information')
+
+                casa.db_execute(query=insert_school, type='insert', data=combine_school)
+                logger.debug('Successfully inserted -> school information')
+            except Exception as err:
+                logger.error('Something went wrong at ' + str(apartment_id))
+                logger.error(err)
+                print('Something went wrong || apartment_id:', str(apartment_id))
+
+
+            area_initial = self._tower_area()
+            area_choice = 0
+
+            for i in range(len(area_initial)):
+                tower_area = self._tower_area()
+                area = tower_area[area_choice]
+                area.click()
+                time.sleep(1)
+
+                get_price = self._tower_price(temp_id=apartment_id, temp_area=area.text)
+                if get_price is False:
+                    return False
+
+                print('GET PRICE')
+                print(get_price)
+
+                logger.debug('>>> Price list for: ' + area.text)
+                logger.debug(get_price)
+
+                area_choice += 1
+
+            print('-------------')
+            print('Complete!')
+>>>>>>> 6ac1fb8afdeb6bacad6f957a1aff4f79b0921535
 
     @dc.clean_apartment
     def _apartment_info(self):
