@@ -189,6 +189,23 @@ class WebCrawling:
         print('Complete!')
         self.driver.close()
 
+    def web_collect_name(self, url_id, id):
+        try:
+            logger.debug('Collecting: ' + str(url_id) + ' at index: ' + str(id))
+            apartment_id = url_id
+
+            apartment_information = self.driver.find_element_by_css_selector('#complexTitle')
+            apartment_name = apartment_information.text
+
+            apartment_update = casa.db_insert(type='name', val=apartment_name, id=apartment_id)
+            casa.db_execute(apartment_update)
+
+            logger.debug('Successfully updated apartment name ' + apartment_name)
+
+        except:
+            logger.debug('>>> Failed collecting: ' + str(url_id) + ' at index: ' + str(id))
+            pass
+
     def web_collect(self, url_id, id):
         try:
             logger.debug('Collecting: ' + str(url_id) + ' at index: ' + str(id))
