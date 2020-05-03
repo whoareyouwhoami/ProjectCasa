@@ -23,17 +23,27 @@ class CrawlTest:
         if unit_all is False:
             self.landsite.web_open(driver=self.driver, url=self.url)
 
-    def unit_initiate(self):
-        apartment_info = self.driver.find_element_by_xpath("/html/body/div[2]/div/section/div[2]/div[1]/div/div/div[1]/div[1]/div[2]/div[2]/button[1]")
-        apartment_info.click()
-        time.sleep(1)
+    def unit_apartment_name(self, start, end):
+        if end < 1 or start < 1:
+            raise ValueError('Input value should be higher than 1')
+        if start > end:
+            raise ValueError('Starting page should be lesser than ending page')
 
-    def unit_apartment(self):
-        self.landsite._apartment_info()
+        file = pd.read_csv('apartment_url.csv', encoding='euc-kr')
+        url_list = list(file['url'][start - 1:end])
+        x = start
+        for idx, url in enumerate(url_list):
+            logger.debug('URL: ' + str(x))
+            logger.debug(str(url))
 
-    def unit_school(self):
-        self.unit_initiate()
-        self.landsite._school_info()
+            url_parse = urlparse(url)
+            # Apartment ID
+            url_id = url_parse.path.split('/')[-1]
+
+            self.landsite.web_open(driver=self.driver, url=str(url))
+            self.landsite.web_collect_name(url_id=url_id, id=idx)
+
+            x += 1
 
     def unit_all(self, start, end):
         if end < 1 or start < 1:
@@ -67,4 +77,5 @@ class CrawlTest:
 
 test = CrawlTest(unit_all=True, driver_type='firefox', url='https://new.land.naver.com/complexes/1?ms=37.548119,127.040638,17&a=APT:JGC:ABYG&e=RETAIL')
 # test.unit_collectURL()
-test.unit_all(start=6172, end=8208)
+# test.unit_all(start=869, end=869)
+test.unit_apartment_name(start=110, end=8029)
