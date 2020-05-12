@@ -1,2 +1,5 @@
 echo .DS_Store >> .gitignore
 
+WebCrawling/database.py
+WebCrawling/credentials
+Modeling/label_data
