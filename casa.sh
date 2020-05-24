@@ -4,12 +4,14 @@ display_info() {
   echo "Project CASA
 
   Usage:
-    zsh casa.sh --options
+    sh casa.sh --options
 
   Options:
+    --apt_name     # Apartment name
+    --apt_area     # Apartment area
     --type_one     # First option
-    --type_two     # Second option
-    --type_three   # Third option
+
+  Note:
 
 
 (C) Copyright 2020, Team Casa Production
@@ -38,26 +40,22 @@ args_check() {
 }
 
 args_parse() {
-  local i=1
+  local i=0
 
-  while test $i -le ${#ARGS[@]}; do
+  while test $i -lt ${#ARGS[@]}; do
     local j=$((i+1))
 
     case ${ARGS[i]} in
       --) break;;
-
       --type_one)
         args_check "type_one" ${ARGS[$j]}
         i=$j;;
-
-      --type_two)
-        args_check "type_two" ${ARGS[$j]}
+      --apt_name)
+        args_check "apt_name" ${ARGS[$j]}
         i=$j;;
-
-      --type_three)
-        args_check "type_three" ${ARGS[$j]}
+      --apt_area)
+        args_check "apt_area" ${ARGS[$j]}
         i=$j;;
-
       *) echo "ERROR PARSING: ${ARGS[$i]}";;
     esac
 
@@ -76,3 +74,7 @@ ARGS=("$@")
 
 # Parsing arguments
 args_parse
+
+# Predict
+echo "\n===== Let's Predict! ====="
+RESULT=$(python3 Modeling/model.py  '당산반도유보라팰리스' 108)
