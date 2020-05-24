@@ -6,3 +6,5 @@ psycopg2
 requests
 selenium
 PyYAML
+matplotlib
+statsmodels
