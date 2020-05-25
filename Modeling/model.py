@@ -15,7 +15,7 @@ class PredictModel:
 
         # User input
         self.apartment_name = apartment_name
-        self.apartment_area = apartment_area
+        self.apartment_area = int(apartment_area)
 
 
     def _model_data(self):
@@ -56,20 +56,24 @@ class PredictModel:
 
         return total
 
-    def extract_model(self):
+    def extract_model(self, input):
         total = self._model_clean()
 
-        train = total[:-4]
-        test = total[-4:]
+        # input
+        n = int(input)
 
-        model = VAR(train)
+        new_index = pd.date_range(start=total.index[-1], periods=n + 1, freq='MS')[1:]
+
+        model = VAR(total)
         model_fit = model.fit()
+        pred = model_fit.forecast(y=total.values, steps=n)
 
-        yhat = model_fit.forecast(y=train.values, steps=4)
-        var = pd.DataFrame(yhat, columns=['Q1_hat', 'Q2_hat', 'Q3_hat'], index=test.index)
+        pred = pd.DataFrame(pred, columns=['Q1', 'Q2', 'Q3'], index=new_index)
+        final_df = pd.concat([total, pred], axis=0)
 
-        result = pd.concat([test, var], axis=1)
-        return result
+        final = final_df.loc[new_index]
+
+        return final
 
     def Q1(self, x):
         return np.percentile(x, 0.25)
@@ -80,13 +84,16 @@ class PredictModel:
     def Q3(self, x):
         return np.percentile(x, 0.75)
 
-apartment_name = '당산반도유보라팰리스'
-apartment_area = 108
 
-# apartment_name = sys.argv[0]
-# apartment_area = sys.argv[1]
+# apartment_name = '당산반도유보라팰리스'
+# apartment_area = 108
+# months = 5
+
+apartment_name = sys.argv[1]
+apartment_area = sys.argv[2]
+months = sys.argv[3]
 
 predict_model = PredictModel(apartment_name, apartment_area)
-result = predict_model.extract_model()
+result = predict_model.extract_model(input=months)
 
 exit(result)
