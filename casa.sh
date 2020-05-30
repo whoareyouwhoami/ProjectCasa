@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source casa_list.sh
+
 display_info() {
   echo "Project CASA
 
@@ -12,6 +14,8 @@ display_info() {
     --predict_num  # Predicting duration
 
   Optional:
+    --find         # Finding if an apartment exist in the list
+    --show_list    # Showing list of apartments available for prediction
     --type_one     # First option
 
   Note:
@@ -21,16 +25,12 @@ display_info() {
 "
 }
 
-
 args_check() {
   local VALUE="${2:-}"
 
 	if [[ -z "$VALUE" ]]; then
 		echo "Missing value for variable $1"
 		exit 1
-#	else
-	  # test
-#	  echo "$1: $VALUE"
 	fi
 
 	if [[ ${VALUE:0:2} == "--" ]]; then
@@ -40,12 +40,11 @@ args_check() {
 
 	# Returning value
 	eval $1=\"$VALUE\"
-	echo "Evaluating" $1
 }
 
 show_warning() {
-  MSG=$1
-  echo $MSG
+  message=$1
+  echo $message
   exit 1
 }
 
@@ -87,18 +86,45 @@ args_parse() {
   fi
 }
 
+check_available() {
+  # Showing apartment list
+  if [[ "$1" == "--show_list" ]]; then
+    display_apartment
+  fi
+
+  # Find apartment
+  if [[ "$1" == "--find" ]]; then
+    args_check "APT_CHECK" $2
+
+    if display_apartment | grep -w ${APT_CHECK} > /dev/null; then
+      echo "Apartment name: '${APT_CHECK}' exist."
+    else
+      echo "Apartment name: '${APT_CHECK}' doesn't exist..."
+      echo "Try --show_list option to see available apartments"
+      exit 1
+    fi
+  fi
+
+  exit 0
+}
+
 # If nothing is passed or "--help" is passed, show how this script is used
 if [[ $# -eq 0 || "$1" == "--help" ]]; then
     display_info
     exit 0
 fi
 
+# Check for apartments
+if [[ "$1" == "--find" || "$1" == "--show_list" ]]; then
+  check_available $1 $2
+fi
+
+
 # Passed arguments
 ARGS=("$@")
 
 # Parsing arguments
 args_parse
-
 # Predict
 echo "\n===== Let's Predict! ====="
 
