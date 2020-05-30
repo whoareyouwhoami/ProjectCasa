@@ -21,7 +21,7 @@
 **예시:**
 
     ==== 실행 ====
-    $ sh casa.sh --apt_name 당산반도유보라팰리스 --apt_area 108
+    $ sh casa.sh --apt_name 당산반도유보라팰리스 --apt_area 108 --predict_num 4
     
     ==== 결과 ====
                        Q1        Q2         Q3
