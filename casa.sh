@@ -6,9 +6,12 @@ display_info() {
   Usage:
     sh casa.sh --options
 
-  Options:
+  Required:
     --apt_name     # Apartment name
     --apt_area     # Apartment area
+    --predict_num  # Predicting duration
+
+  Optional:
     --type_one     # First option
 
   Note:
@@ -25,9 +28,9 @@ args_check() {
 	if [[ -z "$VALUE" ]]; then
 		echo "Missing value for variable $1"
 		exit 1
-	else
+#	else
 	  # test
-	  echo "$1: $VALUE"
+#	  echo "$1: $VALUE"
 	fi
 
 	if [[ ${VALUE:0:2} == "--" ]]; then
@@ -37,6 +40,13 @@ args_check() {
 
 	# Returning value
 	eval $1=\"$VALUE\"
+	echo "Evaluating" $1
+}
+
+show_warning() {
+  MSG=$1
+  echo $MSG
+  exit 1
 }
 
 args_parse() {
@@ -48,19 +58,33 @@ args_parse() {
     case ${ARGS[i]} in
       --) break;;
       --type_one)
-        args_check "type_one" ${ARGS[$j]}
+        args_check "TYPE_ONE" ${ARGS[$j]}
         i=$j;;
       --apt_name)
-        args_check "apt_name" ${ARGS[$j]}
+        args_check "APT_NAME" ${ARGS[$j]}
         i=$j;;
       --apt_area)
-        args_check "apt_area" ${ARGS[$j]}
+        args_check "APT_AREA" ${ARGS[$j]}
         i=$j;;
-      *) echo "ERROR PARSING: ${ARGS[$i]}";;
+      --predict_num)
+        args_check "PREDICT_NUM" ${ARGS[$j]}
+        i=$j;;
+      *) show_warning "ERROR PARSING: ${ARGS[$i]}";;
     esac
 
     i=$((i+1))
   done
+
+  # Checking if required options are given
+  if [[ -z ${APT_NAME} ]]; then
+    show_warning "Apartment name required for --apt_name"
+  fi
+  if [[ -z ${APT_AREA} ]]; then
+    show_warning "Apartment area required for --apt_area"
+  fi
+  if [[ -z ${PREDICT_NUM} ]]; then
+    show_warning "Please specify forecasting months for --predict_num"
+  fi
 }
 
 # If nothing is passed or "--help" is passed, show how this script is used
@@ -77,4 +101,6 @@ args_parse
 
 # Predict
 echo "\n===== Let's Predict! ====="
-RESULT=$(python3 Modeling/model.py  '당산반도유보라팰리스' 108)
+
+RESULT=$(python3 Modeling/model.py ${APT_NAME} ${APT_AREA} ${PREDICT_NUM})
+
