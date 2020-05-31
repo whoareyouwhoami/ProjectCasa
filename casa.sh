@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source casa_list.sh
+source casa_src/casa_list.sh
 
 display_info() {
   echo "Project CASA
@@ -96,11 +96,12 @@ check_available() {
   if [[ "$1" == "--find" ]]; then
     args_check "APT_CHECK" $2
 
-    if display_apartment | grep -w ${APT_CHECK} > /dev/null; then
-      echo "Apartment name: '${APT_CHECK}' exist."
+    if display_apartment | grep -x ${APT_CHECK} > /dev/null; then
+      AREA_AVAIL=$(python3 casa_src/casa_find.py ${APT_CHECK})
+      echo $AREA_AVAIL
     else
       echo "Apartment name: '${APT_CHECK}' doesn't exist..."
-      echo "Try --show_list option to see available apartments"
+      echo "Try --show_list option to see available apartments\n"
       exit 1
     fi
   fi
@@ -114,6 +115,7 @@ if [[ $# -eq 0 || "$1" == "--help" ]]; then
     exit 0
 fi
 
+
 # Check for apartments
 if [[ "$1" == "--find" || "$1" == "--show_list" ]]; then
   check_available $1 $2
@@ -125,8 +127,8 @@ ARGS=("$@")
 
 # Parsing arguments
 args_parse
+
 # Predict
 echo "\n===== Let's Predict! ====="
-
 RESULT=$(python3 Modeling/model.py ${APT_NAME} ${APT_AREA} ${PREDICT_NUM})
 

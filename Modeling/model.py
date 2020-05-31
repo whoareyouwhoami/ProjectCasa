@@ -41,10 +41,12 @@ class PredictModel:
         temp = dataframe[(dataframe['cluster'] == self.group_name) &
                   (dataframe['area'] <= self.apartment_area + 3) &
                   (dataframe['area'] >= self.apartment_area - 3)]
-
-        date_range = pd.date_range(start=temp.loc[temp['apartment_name'] == self.apartment_name, 'period'].min(),
-                                   end=temp['period'].max(),
-                                   freq='MS')
+        try:
+            date_range = pd.date_range(start=temp.loc[temp['apartment_name'] == self.apartment_name, 'period'].min(),
+                                       end=temp['period'].max(),
+                                       freq='MS')
+        except ValueError:
+            return False
 
         exist = (temp.loc[temp['apartment_name'] == self.apartment_name].groupby('period')['amount'].agg([self.Q1, self.Q2, self.Q3], ).reset_index())
 
@@ -58,6 +60,9 @@ class PredictModel:
 
     def extract_model(self, input):
         total = self._model_clean()
+
+        if total is False:
+            return "Try to find available area by:\n  sh casa.sh --find aptartment name\n"
 
         # input
         n = int(input)
