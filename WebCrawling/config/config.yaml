@@ -1,5 +1,0 @@
-logging:
-  level: DEBUG
-  format: '%(asctime)s %(levelname)s: %(message)s in %(filename)s:%(lineno)d'
-  location: logs
-  filename: proj_casa.log
