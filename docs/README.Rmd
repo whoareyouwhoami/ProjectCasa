@@ -20,11 +20,11 @@ ProjectCasa
 ├── EDA                  --> 시각화
 |
 ├── Modeling             --> 모델링
-│   ├── data             --> <추가>
-│   ├── model            --> <추가>
-│   ├── output           --> <추가>
-│   ├── reference        --> <추가>
-│   └── trials           --> <추가>
+│   ├── data             --> 전처리된 데이터
+│   ├── model            --> 인코딩, 스케일링된 데이터
+│   ├── output           --> 결과
+│   ├── reference        --> 모델링 참고 문서
+│   └── trials           --> 시도된 모델링
 |
 ├── casa_src             --> 쉘에 필요한 소스
 │   └── data             --> 쉘에 필요한 데이터
