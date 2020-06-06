@@ -16,9 +16,7 @@ display_info() {
   Optional:
     --find         # Finding if an apartment exist in the list
     --show_list    # Showing list of apartments available for prediction
-    --type_one     # First option
-
-  Note:
+    --save_image   # Saving predicted graph
 
 
 (C) Copyright 2020, Team Casa Production
@@ -139,4 +137,4 @@ args_parse
 
 # Predict
 echo "\n===== Let's Predict! ====="
-RESULT=$(python3 Modeling/model.py ${APT_NAME} ${APT_AREA} ${PREDICT_NUM} ${SAVE_IMG})
+RESULT=$(python3 Modeling/model2.py ${APT_NAME} ${APT_AREA} ${PREDICT_NUM} ${SAVE_IMG})
