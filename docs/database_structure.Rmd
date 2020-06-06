@@ -1,5 +1,5 @@
 ---
-title: ""
+title: "데이터베이스 구조"
 output: github_document
 ---
 
@@ -7,9 +7,6 @@ output: github_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Project Casa Documentation
+#### **데이터베이스:** PostgreSQL
 
-
-### 프로젝트 구조
-
-![](pics/overview.png)
+![](pics/database.png)

@@ -35,8 +35,8 @@ ProjectCasa
 
 **개별 문서**
 
-  - [아키텍쳐]()
+  - [아키텍쳐](architecture.md)
   
-  - [크롤링/데이터베이스]()
+  - [데이터베이스](database_structure.md)
   
   - [모델링](model.md)
