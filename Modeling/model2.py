@@ -149,14 +149,15 @@ class PredictModel(CleanModel):
 
         final_df = pd.concat([total[-n:], arima], axis=1)
         final_df.columns = ['real', 'model']
-
-        final_df['real'] = final_df['real'].map(int)
         final_df['model'] = final_df['model'].map(int)
+        final_df['model'] = final_df['model'].apply(lambda x: "{:,}".format(x))
+        final = final_df['model'].reset_index()
+        final = final.rename(columns={"period":"Period", "model":"Price"})
 
         if save_status is True:
             self._save_image_model(eval_model=final_df, pred_model=pred, pred_num=input)
 
-        return final_df
+        return final.to_string(index=False)
 
 
 # apartment_name = '당산반도유보라팰리스'
