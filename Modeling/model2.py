@@ -145,7 +145,7 @@ class PredictModel(CleanModel):
         final = final_df['model'].reset_index()
         final = final.rename(columns={"period":"Period", "model":"Price"})
 
-        return final.to_string(index=False)
+        return final[['Price']].to_string(index=False)
 
 
 # apartment_name = '당산반도유보라팰리스'
