@@ -34,11 +34,11 @@ $ sh casa.sh --apt_name 아파트이름 --apt_area 아파트 면적 --predict_nu
 $ sh casa.sh --apt_name 당산반도유보라팰리스 --apt_area 108 --predict_num 4
 
 ==== 결과 ====
-        Price
-1,114,069,085
-1,117,512,744
-1,120,956,402
-1,124,400,061
+   Period          Price
++1 month   1,114,069,085
++2 months  1,117,512,744
++3 months  1,120,956,402
++4 months  1,124,400,061
 
 ```
 

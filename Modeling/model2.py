@@ -143,15 +143,28 @@ class PredictModel(CleanModel):
         final_df['model'] = final_df['model'].map(int)
         final_df['model'] = final_df['model'].apply(lambda x: "{:,}".format(x))
         final = final_df['model'].reset_index()
+
         final = final.rename(columns={"period":"Period", "model":"Price"})
 
-        return final[['Price']].to_string(index=False)
+        period_list = []
+        for i in range(len(final['Period'])):
+            if i == 0:
+                append_name = "+" + str(i + 1) + " month "
+            else:
+                append_name = "+" + str(i + 1) + " months"
+
+            period_list.append(append_name)
+
+        period_temp = pd.DataFrame({"Period":period_list})
+
+        output = pd.merge(period_temp, final['Price'],  left_index=True, right_index=True)
+
+        return output.to_string(index=False)
 
 
 # apartment_name = '당산반도유보라팰리스'
 # apartment_area = 108
 # months = 5
-# save_status = 'false'
 
 apartment_name = sys.argv[1]
 apartment_area = sys.argv[2]
