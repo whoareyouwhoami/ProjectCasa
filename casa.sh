@@ -16,7 +16,6 @@ display_info() {
   Optional:
     --find         # Finding if an apartment exist in the list
     --show_list    # Showing list of apartments available for prediction
-    --save_image   # Saving predicted graph
 
 
 (C) Copyright 2020, Team Casa Production
@@ -66,9 +65,6 @@ args_parse() {
       --predict_num)
         args_check "PREDICT_NUM" ${ARGS[$j]}
         i=$j;;
-      --save_image)
-        args_check "SAVE_IMG" ${ARGS[$j]}
-        i=$j;;
       *) show_warning "ERROR PARSING: ${ARGS[$i]}";;
     esac
 
@@ -84,12 +80,6 @@ args_parse() {
   fi
   if [[ -z ${PREDICT_NUM} ]]; then
     show_warning "Please specify forecasting months for --predict_num"
-  fi
-  if [[ -z ${SAVE_IMG} ]]; then
-    # If saving image option is empty
-    SAVE_IMG=false
-  else
-    SAVE_IMG=true
   fi
 }
 
@@ -137,4 +127,4 @@ args_parse
 
 # Predict
 echo "\n===== Let's Predict! ====="
-RESULT=$(python3 Modeling/model2.py ${APT_NAME} ${APT_AREA} ${PREDICT_NUM} ${SAVE_IMG})
+RESULT=$(python3 Modeling/model2.py ${APT_NAME} ${APT_AREA} ${PREDICT_NUM})

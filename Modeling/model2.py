@@ -96,15 +96,6 @@ class CleanModel:
 
         return t
 
-    def Q1(self, x):
-        return np.percentile(x, 0.25)
-
-    def Q2(self, x):
-        return np.percentile(x, 0.5)
-
-    def Q3(self, x):
-        return np.percentile(x, 0.75)
-
 
 class PredictModel(CleanModel):
     def __init__(self, apartment_name, apartment_area):
@@ -131,7 +122,7 @@ class PredictModel(CleanModel):
         plt.savefig(save_path, dpi=300)
 
 
-    def extract_model(self, input, save_status=False):
+    def extract_model(self, input):
         total = self._model_clean()
 
         if total is False:
@@ -154,9 +145,6 @@ class PredictModel(CleanModel):
         final = final_df['model'].reset_index()
         final = final.rename(columns={"period":"Period", "model":"Price"})
 
-        if save_status is True:
-            self._save_image_model(eval_model=final_df, pred_model=pred, pred_num=input)
-
         return final.to_string(index=False)
 
 
@@ -168,14 +156,8 @@ class PredictModel(CleanModel):
 apartment_name = sys.argv[1]
 apartment_area = sys.argv[2]
 months = sys.argv[3]
-save_status = sys.argv[4]
-
-if save_status == 'false':
-    status = False
-else:
-    status = True
 
 predict_model = PredictModel(apartment_name, apartment_area)
-result = predict_model.extract_model(input=months, save_status=status)
+result = predict_model.extract_model(input=months)
 
 exit(result)
