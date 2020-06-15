@@ -28,4 +28,6 @@
 
   - [데이터베이스](database_structure.md)
 
+  - [EDA](EDA.md)
+
   - [모델링](model.md)
