@@ -21,9 +21,19 @@
 
 ``` python
 from kmodes.kprototypes import KPrototypes
-model = KPrototypes(n_clusters=k, init='Cao', random_state=0)
+model = KPrototypes(n_clusters=k, random_state=0)
 cluster = model.fit_predict(train, categorical=cate_variable_number)
 ```
+
+*K-Prototype 알고리즘은 아래와 같이 거리 함수를 설정하며, 집단의 모든 자료로부터 가장 거리가 짧은 중심점을 기준으로
+자료를 군집화합니다.*
+
+\[d(X_i,Q_l)=\sum_{j=1}^{m_r}(x_{ij}^r-q_{lj}^r)^2 + \gamma_l\sum_{j=1}^{m_c}\delta(x_{ij}^c,q_{lj}^c)\]
+
+이때 \(p=q\)일때, \(\delta(p,q)=0\)이며 \(p \neq q\)일때 \(\delta(p,q)=1\) 입니다.
+\(x_{ij}^r\)와 \(q_{lj}^r\)는 i번째의 자료값과 l번째 클러스터의 연속형 자료의 값을,
+\(x_{ij}^c\)와 \(q_{lj}^c\)는 범주형 자료의 값을 의미합니다. \(\gamma_l\)는 l번째 클러스터의
+범주형 자료의 가중치입니다.
 
 ## 2\. 시계열 예측
 
