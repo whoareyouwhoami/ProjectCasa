@@ -1,8 +1,6 @@
 EDA
 ================
 
-# EDA 방식
-
 ## 1\. 분석을 위한 기본적인 데이터 전처리
 
 ### 1\) 분석에 용이하도록 object 변수 변환
@@ -131,6 +129,8 @@ sns.heatmap(temp.corr(),annot=True,cmap='YlGnBu')
 
 ##### 학교 id
 
+  - 명목형 변수의 경우(학교id,지하철id,건설사id) id에 따른 산포도를 그리고 그 값이 고르게 분포하지 않고 편중되어
+    있을 경우, 그 변수가 클러스터링을 구분짓는 올바른 척도로 사용할 수 없다고 판단해 제거  
   - 학교 id에 따른 2019년도의 거래가를 구해서 분포를 살펴보니, 가격의 분포가 5억을 중심으로 정규분포에 근사하며 학교에
     따라 다양한 값을 가짐
 
@@ -171,13 +171,15 @@ figure.set_size_inches(12,6)
 sns.boxplot(x="school_dist",y="amount",data=df,color="m",ax=ax1)
 ```
 
-![png](pics/output_60_1.png) - 아파트에서 학교까지의 거리에 따라 실거래가는 큰 차이를 보이지 않는다.
-특히 17분 이하의 경우에는 거의 동일한 box plot을 갖는다 – 제거 - heatmap의 0.023 수치에서도 확인
-가능
+![png](pics/output_60_1.png)
+
+  - 아파트에서 학교까지의 거리에 따라 실거래가는 큰 차이를 보이지 않는다. 특히 17분 이하의 경우에는 거의 동일한 box
+    plot을 가지므로 제거
+  - heatmap의 0.023 수치에서도 확인 가능
 
 ##### school\_students
 
-  - 자치구 세대수 인구 대비 학교 학생수의 비율이 커질수록, amount가 커지는 경향
+  - 자치구별 세대수 인구를 구하고 세대수 대비 학교 학생 수의 비율을 구하였다
     <div>
     <style scoped>
       .dataframe tbody tr th:only-of-type {
@@ -605,8 +607,12 @@ ratio
 
 </div>
 
-  - ratio는 각 자치구별 세대수와 학교 학생수의 비율을 구한것 ![png](pics/output_72_1.png)
-  - 구한 비율은 0.00038과 0.015사이 , 0.015이상인 학교는 한 사례로 제거한다
+  - ratio는 각 자치구별 세대수와 학교 학생수의 비율을 구한것
+
+![png](pics/output_72_1.png)
+
+  - 비율은 0.00038과 0.015사이 , 0.015이상인 학교는 한 사례로 제거한다
+  - 비율에 따른 실거래가 regplot을 그려보았다
 
 <!-- end list -->
 
@@ -617,15 +623,15 @@ figure.set_size_inches(6,6)
 sns.regplot(x="ratio",y="amount",data=df1,color="m",ax=ax1)
 ```
 
-![png](pics/output_75_1.png) - 비율이 커질수록 아파트의 실거래가가 높아진다
-![png](pics/output_77_1.png)
+![png](pics/output_75_1.png)
 
-\-자치구 세대수 인구 대비 학교 학생수의 비율이 커질수록, 실거래가 커지는 경향
+  - 비율이 커질수록 아파트의 실거래가가 높아진다 ![png](pics/output_77_1.png)
+
+  - 구간별로 살펴보았을 때 자치구 세대수 인구 대비 학교 학생수의 비율이 커질수록, 실거래가 커지는 경향
 
 ### 3\) 세대당 주차대수 apartment\_parking
 
-  - 세대당 주차대수는 0\~2대 사이에 주로 분포하며, 세대당 주차대수의 값이 커질수록 amount의 값이 점진적으로 우상향
-    ![png](pics/output_80_1.png)
+  - 세대당 주차대수는 0\~2대 사이에 주로 분포 ![png](pics/output_80_1.png)
 
 <!-- end list -->
 
@@ -636,25 +642,476 @@ figure.set_size_inches(18,5)
 sns.barplot(data=df,x="apartment_parking",y="amount",ax=ax1)
 ```
 
-![png](pics/output_82_1.png) - 세대당 주차대수의 값이 커질수록 amount의 값이 점진적으로 우상향하는
-것을 확인할 수 있다
+![png](pics/output_82_1.png) - 세대당 주차대수의 값이 커질수록 실거래가의 값이 점진적으로 우상향하는 것을
+확인할 수 있다
 
 ### 4\) 건설
 
+##### apartment\_building
+
   - 2520개의 건설사 존재
-  - 건설사별 2019년 아파트 평균 가격을 구하였을 때, 10억 이하의 값으로 편중
-  - 1970, 2020년대에 지어진 아파트의 수가 적은거에 비해 amount의 평균이 높으며, 2000년대에 가장 아파트가
-    많이 지어졌지만 낮은 amount값을 가짐
+  - 건설사 id별 2019년도 평균 실거래가 분포를 살펴보았을 때, 10억 이하의 값으로 과도하게 편중되어 있으므로 제거
+
+<div>
+
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+
+<table  class="dataframe">
+
+<thead>
+
+<tr style="text-align: right;">
+
+<th>
+
+</th>
+
+<th>
+
+apartment\_builder
+
+</th>
+
+<th>
+
+year
+
+</th>
+
+<th>
+
+amount
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<th>
+
+3
+
+</th>
+
+<td>
+
+((주)심원디엔씨)
+
+</td>
+
+<td>
+
+2019
+
+</td>
+
+<td>
+
+344000000.0
+
+</td>
+
+</tr>
+
+<tr>
+
+<th>
+
+13
+
+</th>
+
+<td>
+
+(유)25종합건설
+
+</td>
+
+<td>
+
+2019
+
+</td>
+
+<td>
+
+325000000.0
+
+</td>
+
+</tr>
+
+<tr>
+
+<th>
+
+24
+
+</th>
+
+<td>
+
+(유)동호에스제이종합개발
+
+</td>
+
+<td>
+
+2019
+
+</td>
+
+<td>
+
+280000000.0
+
+</td>
+
+</tr>
+
+<tr>
+
+<th>
+
+32
+
+</th>
+
+<td>
+
+(유)호원건설
+
+</td>
+
+<td>
+
+2019
+
+</td>
+
+<td>
+
+340000000.0
+
+</td>
+
+</tr>
+
+<tr>
+
+<th>
+
+45
+
+</th>
+
+<td>
+
+(조한종합)
+
+</td>
+
+<td>
+
+2019
+
+</td>
+
+<td>
+
+509999999.0
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+``` python
+figure,(ax1,ax2) = plt.subplots(nrows=1,ncols=2)
+figure.set_size_inches(18,6) 
+
+sns.scatterplot(sample_2019['apartment_builder'],sample_2019['amount'],ax=ax1)
+sns.kdeplot(sample_2019['amount'],ax=ax2)
+```
+
+![png](pics/output_89_1.png)
+
+##### apartment\_build\_year
+
+  - 1970, 2020년대에 지어진 아파트의 수가 적은거에 비해 실거래가의 평균이 높으며, 2000년대에 가장 아파트가 많이
+    지어졌지만 낮은 실거래가의 값을 가짐
+
+![png](pics/output_94_1.png)
 
 ### 5\) 지하철역
 
-  - 각 지하철역 근처 아파트의 2019년도 거래가 평균을 살펴보았을 때, 가격의 분포가 역에 따라 다양한 값을 갖는다
+##### st\_name
+
+  - 각 지하철역 id에 따른 2019년도 거래가 평균을 살펴보았을 때, 가격의 분포가 역에 따라 다양한 값을 갖는다
+
+<!-- end list -->
+
+``` python
+sample = df.groupby(['st_name','year'])['amount'].mean().reset_index()
+sample_2019 = sample[sample['year']==2019]
+sample_2019.head()
+```
+
+<div>
+
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+
+<table class="dataframe">
+
+<thead>
+
+<tr style="text-align: right;">
+
+<th>
+
+</th>
+
+<th>
+
+st\_name
+
+</th>
+
+<th>
+
+year
+
+</th>
+
+<th>
+
+amount
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<th>
+
+13
+
+</th>
+
+<td>
+
+4.19민주묘지역
+
+</td>
+
+<td>
+
+2019
+
+</td>
+
+<td>
+
+3.322311e+08
+
+</td>
+
+</tr>
+
+<tr>
+
+<th>
+
+28
+
+</th>
+
+<td>
+
+가락시장역
+
+</td>
+
+<td>
+
+2019
+
+</td>
+
+<td>
+
+1.131895e+09
+
+</td>
+
+</tr>
+
+<tr>
+
+<th>
+
+43
+
+</th>
+
+<td>
+
+가산디지털단지역
+
+</td>
+
+<td>
+
+2019
+
+</td>
+
+<td>
+
+3.877221e+08
+
+</td>
+
+</tr>
+
+<tr>
+
+<th>
+
+58
+
+</th>
+
+<td>
+
+가양역
+
+</td>
+
+<td>
+
+2019
+
+</td>
+
+<td>
+
+5.530393e+08
+
+</td>
+
+</tr>
+
+<tr>
+
+<th>
+
+73
+
+</th>
+
+<td>
+
+가오리역
+
+</td>
+
+<td>
+
+2019
+
+</td>
+
+<td>
+
+4.011351e+08
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+![png](pics/output_100_1.png)
+
+##### st\_volume
+
   - 환승역이 4개인 곳의 실거래가가 2014년도 이후부터 꾸준히 증가하며, 환승역의 개수 별 거래액이 큰 차이를 보이지 않는다
     \> 제거
-  - 지하철역까지의 거리가 0.0247 이하인 경우 음의 상관관계, 0.0247보다 큰 경우에는 양의 상관관계를 보인다.
+
+![png](pics/output_103_1.png)
+
+##### st\_dist
+
+  - 지하철역까지의 거리가 0.0247 이하인 경우 거리가 가까울 수록 실거래가가 커지는 경향이었으나, 0.0247보다 큰
+    경우에는 양의 상관관계를 보인다.
+
+<!-- end list -->
+
+``` python
+factor = pd.cut(df.st_dist,7)
+a = df.amount.groupby(factor).mean()
+a = pd.DataFrame(a)
+a = a.reset_index()
+
+figure,ax1 = plt.subplots()
+figure.set_size_inches(18,5) 
+
+sns.barplot(data=a,x="st_dist",y="amount",ax=ax1)
+```
+
+![png](pics/output_108_1.png)
+
+``` python
+df[df['st_dist']>0.0296]['apartment_addr_town'].drop_duplicates()
+```
+
+  - 양의 상관관계에 해당하는 동네는 평창동임을 확인할 수 있었다
 
 #### feature selecting
 
-  - 최종적으로 클러스터링에 ‘district\_id’ ‘apartmnet\_addr\_town’
-    ‘apartment\_build\_year’ ‘apartment\_parking’ ‘school\_name’
-    ‘school\_students’ ‘st\_name’ ’st\_dist’변수를 사용하기로 결정
+  - EDA를 거쳐 최종적으로 자치구별id, 행정동 id, 아파트 건축연도, 세대당 주차 대수, 학교id, 학교 학생수, 지하철
+    id, 지하철역과의 거리 변수를 클러스터링에 사용하기로 결정
