@@ -110,28 +110,534 @@ sns.heatmap(temp.corr(),annot=True,cmap='YlGnBu')
 
 ![png](pics/output_34_1.png)
 
-  - 수치상으로 세대당 주차대수, 학교 학생수, 지하철역과의 거리 변수가 상대적으로 amount값과 높은 상관관계를 보인다
+  - 수치상으로 세대당 주차대수, 학교 학생수, 지하철역과의 거리 변수가 상대적으로 실거래가와 높은 상관관계를 보인다
   - 각 변수별로 자세히 알아보자
 
 ### 1\) 연도별 거래액 및 면적
 
+##### amount
+
   - 2009년도부터 2013년까지의 실거래가가 감소하나, 2013년도부터 실거래가 증가
     ![png](pics/output_39_1.png)
+
+##### area
+
   - 면적이 300이상인 아파트들은 찾아보기 힘들다. 대부분 200 이하의 값을 갖는다
   - 면적이 400이상인 곳은 논현동, 도곡동, 방배동에 위치한 아파트다 ![png](pics/output_43_1.png)
 
 ### 2\) 학교정보
 
   - 538개의 학교가 있으며, 초등학교 데이터만 존재
+
+##### 학교 id
+
   - 학교 id에 따른 2019년도의 거래가를 구해서 분포를 살펴보니, 가격의 분포가 5억을 중심으로 정규분포에 근사하며 학교에
     따라 다양한 값을 가짐
-  - 학교 자치구 주소가 아파트의 주소와 값이 모두 동일하므로 제거
-  - 아파트에서 학교까지의 거리에 따른 amount값이 큰 차이를 보이지 않는다 \> 제거
-  - 자치구 세대수 인구 대비 학교 학생수의 비율이 커질수록, amount가 커지는 경향
 
-### 3\) 세대당 주차대수
+<!-- end list -->
+
+``` python
+sample = df[df['school_students']>0]
+sample = sample.groupby(['school_name','year'])['amount'].mean().reset_index()
+sample_2019 = sample[sample['year']==2019]
+sample_2019.head()
+```
+
+``` python
+figure,(ax1,ax2) = plt.subplots(nrows=1,ncols=2)
+figure.set_size_inches(18,6) 
+
+
+sns.scatterplot(sample_2019['school_name'],sample_2019['amount'],ax=ax1)
+sns.kdeplot(sample_2019['amount'],ax=ax2)
+```
+
+![png](pics/output_52_1.png)
+
+##### school\_addr
+
+  - 학교 자치구 주소가 아파트의 주소와 값이 모두 동일하므로 제거
+
+##### school\_dist
+
+  - 아파트에서 가장 가까운 학교까지의 거리(분단위)
+
+<!-- end list -->
+
+``` python
+figure,ax1 = plt.subplots()
+figure.set_size_inches(12,6) 
+
+sns.boxplot(x="school_dist",y="amount",data=df,color="m",ax=ax1)
+```
+
+![png](pics/output_60_1.png) - 아파트에서 학교까지의 거리에 따라 실거래가는 큰 차이를 보이지 않는다.
+특히 17분 이하의 경우에는 거의 동일한 box plot을 갖는다 – 제거 - heatmap의 0.023 수치에서도 확인
+가능
+
+##### school\_students
+
+  - 자치구 세대수 인구 대비 학교 학생수의 비율이 커질수록, amount가 커지는 경향
+    <div>
+    <style scoped>
+      .dataframe tbody tr th:only-of-type {
+          vertical-align: middle;
+      }
+    
+      .dataframe tbody tr th {
+          vertical-align: top;
+      }
+    
+      .dataframe thead th {
+          text-align: right;
+      }
+    </style>
+    <table class="dataframe">
+    <thead>
+    <tr style="text-align: right;">
+    <th>
+    </th>
+    <th>
+    district\_name
+    </th>
+    <th>
+    세대수
+    </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+    <th>
+    3
+    </th>
+    <td>
+    종로구
+    </td>
+    <td>
+    73947
+    </td>
+    </tr>
+    <tr>
+    <th>
+    4
+    </th>
+    <td>
+    중구
+    </td>
+    <td>
+    62739
+    </td>
+    </tr>
+    <tr>
+    <th>
+    5
+    </th>
+    <td>
+    용산구
+    </td>
+    <td>
+    110126
+    </td>
+    </tr>
+    <tr>
+    <th>
+    6
+    </th>
+    <td>
+    성동구
+    </td>
+    <td>
+    135838
+    </td>
+    </tr>
+    <tr>
+    <th>
+    7
+    </th>
+    <td>
+    광진구
+    </td>
+    <td>
+    164428
+    </td>
+    </tr>
+    </tbody>
+    </table>
+    </div>
+
+<div>
+
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+
+<table class="dataframe">
+
+<thead>
+
+<tr style="text-align: right;">
+
+<th>
+
+</th>
+
+<th>
+
+index
+
+</th>
+
+<th>
+
+school\_name
+
+</th>
+
+<th>
+
+school\_students
+
+</th>
+
+<th>
+
+amount
+
+</th>
+
+<th>
+
+district\_name
+
+</th>
+
+<th>
+
+세대수
+
+</th>
+
+<th>
+
+ratio
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<th>
+
+0
+
+</th>
+
+<td>
+
+0
+
+</td>
+
+<td>
+
+서울가곡초등학교
+
+</td>
+
+<td>
+
+879.0
+
+</td>
+
+<td>
+
+4.794164e+08
+
+</td>
+
+<td>
+
+강서구
+
+</td>
+
+<td>
+
+262708
+
+</td>
+
+<td>
+
+0.003346
+
+</td>
+
+</tr>
+
+<tr>
+
+<th>
+
+1
+
+</th>
+
+<td>
+
+562
+
+</td>
+
+<td>
+
+서울가동초등학교
+
+</td>
+
+<td>
+
+947.0
+
+</td>
+
+<td>
+
+6.759128e+08
+
+</td>
+
+<td>
+
+송파구
+
+</td>
+
+<td>
+
+278711
+
+</td>
+
+<td>
+
+0.003398
+
+</td>
+
+</tr>
+
+<tr>
+
+<th>
+
+2
+
+</th>
+
+<td>
+
+1769
+
+</td>
+
+<td>
+
+서울가락초등학교
+
+</td>
+
+<td>
+
+812.0
+
+</td>
+
+<td>
+
+7.367314e+08
+
+</td>
+
+<td>
+
+송파구
+
+</td>
+
+<td>
+
+278711
+
+</td>
+
+<td>
+
+0.002913
+
+</td>
+
+</tr>
+
+<tr>
+
+<th>
+
+3
+
+</th>
+
+<td>
+
+1984
+
+</td>
+
+<td>
+
+서울가양초등학교
+
+</td>
+
+<td>
+
+235.0
+
+</td>
+
+<td>
+
+3.622789e+08
+
+</td>
+
+<td>
+
+강서구
+
+</td>
+
+<td>
+
+262708
+
+</td>
+
+<td>
+
+0.000895
+
+</td>
+
+</tr>
+
+<tr>
+
+<th>
+
+4
+
+</th>
+
+<td>
+
+2738
+
+</td>
+
+<td>
+
+서울가원초등학교
+
+</td>
+
+<td>
+
+630.0
+
+</td>
+
+<td>
+
+1.038202e+09
+
+</td>
+
+<td>
+
+송파구
+
+</td>
+
+<td>
+
+278711
+
+</td>
+
+<td>
+
+0.002260
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+  - ratio는 각 자치구별 세대수와 학교 학생수의 비율을 구한것 ![png](pics/output_72_1.png)
+  - 구한 비율은 0.00038과 0.015사이 , 0.015이상인 학교는 한 사례로 제거한다
+
+<!-- end list -->
+
+``` python
+figure,ax1 = plt.subplots()
+figure.set_size_inches(6,6) 
+
+sns.regplot(x="ratio",y="amount",data=df1,color="m",ax=ax1)
+```
+
+![png](pics/output_75_1.png) - 비율이 커질수록 아파트의 실거래가가 높아진다
+![png](pics/output_77_1.png)
+
+\-자치구 세대수 인구 대비 학교 학생수의 비율이 커질수록, 실거래가 커지는 경향
+
+### 3\) 세대당 주차대수 apartment\_parking
 
   - 세대당 주차대수는 0\~2대 사이에 주로 분포하며, 세대당 주차대수의 값이 커질수록 amount의 값이 점진적으로 우상향
+    ![png](pics/output_80_1.png)
+
+<!-- end list -->
+
+``` python
+figure,ax1 = plt.subplots()
+figure.set_size_inches(18,5) 
+
+sns.barplot(data=df,x="apartment_parking",y="amount",ax=ax1)
+```
+
+![png](pics/output_82_1.png) - 세대당 주차대수의 값이 커질수록 amount의 값이 점진적으로 우상향하는
+것을 확인할 수 있다
 
 ### 4\) 건설
 
