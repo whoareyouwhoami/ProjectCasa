@@ -1,5 +1,5 @@
 ---
-title: ""
+title: "EDA"
 output: github_document
 ---
 
@@ -12,17 +12,77 @@ knitr::opts_chunk$set(echo = TRUE)
 ### 1) 분석에 용이하도록 object 변수 변환
 - 학교 학생수를 숫자형으로 변환
 - area에서 숫자가 아닌 부분 제거
+- 'school_addr_town'에서 ~길의 내용을 제거하고 ~로까지 확인한다 
+
+```python
+df['school_students'] = pd.to_numeric(df['school_students'])
+```
+
+```python
+# area에서 숫자가 아닌 부분을 제거해준다 
+import re
+df['area'] = df['area'].apply(lambda x: int(re.split('\D',x)[0]))
+```
+
+```python
+import re
+df['school_addr_town'] = df['school_addr_town'].apply(lambda x: re.split('\d',x)[0])
+df['school_addr_town'] = df['school_addr_town'].apply(lambda x: x.replace('로','동'))
+```
 
 ### 2) null값 확인
 - 학교 학생수에 null값이 발생하였고, 0의 값으로 대체
+```python
+df = df.fillna(0)
+```
 
 ### 3) 이상치 제거 
 - 실거래가를 자치구별로 나누고 이상치 제거
 - 동일 면적의 아파트 거래가 한번인 경우, 해당 이상치는 제거하지 않았다
 
+```python
+#이상치 제거
+df.drop(df[df['district_id']==2].sort_values(by='amount',ascending=False).head(1).index,inplace=True)
+df.drop(df[df['district_id']==6].sort_values(by='amount',ascending=False).head(1).index,inplace=True)
+df.drop(df[df['district_id']==12].sort_values(by='amount',ascending=False).head(5).index,inplace=True)
+#df.drop(df[df['district_id']==13].sort_values(by='amount',ascending=False).head(2).index,inplace=True) 거래가 총 2번 이루어져서 제거 안함
+df.drop(df[df['district_id']==14].sort_values(by='amount',ascending=False).head(1).index,inplace=True)
+df.drop(df[df['district_id']==16].sort_values(by='amount',ascending=False).head(1).index,inplace=True)
+df.drop(df[df['district_id']==18].sort_values(by='amount',ascending=False).head(1).index,inplace=True)
+df.drop(df[df['district_id']==19].sort_values(by='amount',ascending=False).head(1).index,inplace=True)
+df.drop(df[df['district_id']==22].sort_values(by='amount',ascending=False).head(3).index,inplace=True)#신호아파트 면적97인 아파트의 경우 한번 거래가 이루어져 제거 안함
+df.drop(df[df['district_id']==24].sort_values(by='amount',ascending=False).head(1).index,inplace=True)
+```
+
 ## 2. 아파트 별 거래분포 확인
 - 시계열기법을 사용하기 이전에 각 아파트의 거래 분포가 촘촘한지 EDA실시
 - 아파트 별로 거래가 발생하지 않는 달이 많다. 매매가의 예측값을 알고싶더라고, 샘플이 거의 없어 예측이 불가능. 이에 따라 클러스터링 기법을 사용해서 샘플의 수를 인위적으로 늘리고자 한다
+
+```python
+apt_count = df['apartment_id'].value_counts().to_frame('count') # 아파트 ID별 거래량(count) 
+graph_1 = sns.distplot(apt_count) # 그래프
+graph_1.axvline(200, color='red') # 수직선
+plt.title('아파트 ID별 거래량의 분포')
+plt.xlabel('거래량'); plt.ylabel('비율')
+plt.show()
+print(f"총 거래량이 200번 이하인 아파트 ID가 전체에서 {round(len(apt_count[apt_count['count']<=200])/n_apt*100)}%의 비율을 차지")
+```
+
+
+![png](pics/output_25_0.png)
+
+```python
+graph_2 = sns.distplot(apt_per['count']) # 그래프
+graph_2.axvline(0, color='red') # 최소
+graph_2.axvline(172, color='red') # 최대
+plt.title('아파트 ID별 거래 없는 달의 분포')
+plt.xlabel('결측치'); plt.ylabel('비율')
+plt.show()
+```
+
+
+![png](pics/output_31_0.png)
+
 
 ## 3. Feature selecting & 데이터 분석 
 - 클러스터링에 사용할 변수를 선택하기 위해 각 변수와 amount의 상관관계 파악에 중점을 두어 분석 
@@ -55,3 +115,4 @@ knitr::opts_chunk$set(echo = TRUE)
 
 #### feature selecting
 - 최종적으로 클러스터링에 'district_id' 'apartmnet_addr_town' 'apartment_build_year' 'apartment_parking' 'school_name' 'school_students' 'st_name' 'st_dist'변수를 사용하기로 결정
+
