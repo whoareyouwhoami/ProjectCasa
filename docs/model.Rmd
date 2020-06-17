@@ -19,11 +19,14 @@ knitr::opts_chunk$set(echo = TRUE)
     3) PCA를 통해 차원을 축소할 수 있지만, 추가적인 과정이 비효율적
   
   - 연속형과 범주형 변수를 형태 그대로 적용할 수 있는 K-Prototype 알고리즘 사용
+
     - 1부터 20개의 k에서 Cost가 어떻게 변화하는지 측정
     - Elbow-Method를 적용하여 기울기의 변동률이 10% 미만으로 떨어지며 클러스터 수가 작은 값을 적당한 k라고 정의합니다.
     - 수집된 데이터 상에는 11개의 클러스터가 적당한 것으로 판단되었습니다.
     - K-Prototype 알고리즘은 아래와 같이 K의 개수, 초기값 설정, 그리고 범주형 변수의 숫자 순서를 지정해야합니다.
-    
+
+![png](pics/model_image_01.png)
+
 ```python
 from kmodes.kprototypes import KPrototypes
 model = KPrototypes(n_clusters=k, random_state=0)
