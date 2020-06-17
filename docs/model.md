@@ -6,10 +6,13 @@
   - K-Prototype 알고리즘 적용
     
       - 초기에 K-Means 클러스터링 알고리즘 고려했다, 그러나
+        
         1)  연속형 + 범주형 변수가 섞여있는 데이터
         2)  범주형 변수를 지시 변수화할 경우 차원이 증가
         3)  PCA를 통해 차원을 축소할 수 있지만, 추가적인 과정이 비효율적
+    
       - 연속형과 범주형 변수를 형태 그대로 적용할 수 있는 K-Prototype 알고리즘 사용
+        
           - 1부터 20개의 k에서 Cost가 어떻게 변화하는지 측정
           - Elbow-Method를 적용하여 기울기의 변동률이 10% 미만으로 떨어지며 클러스터 수가 작은 값을 적당한
             k라고 정의합니다.
@@ -17,7 +20,7 @@
           - K-Prototype 알고리즘은 아래와 같이 K의 개수, 초기값 설정, 그리고 범주형 변수의 숫자 순서를
             지정해야합니다.
 
-<!-- end list -->
+![png](pics/model_image_01.png)
 
 ``` python
 from kmodes.kprototypes import KPrototypes
