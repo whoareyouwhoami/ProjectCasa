@@ -29,7 +29,8 @@ cluster = model.fit_predict(train, categorical=cate_variable_number)
 ```
 
 *K-Prototype 알고리즘은 아래와 같이 거리 함수를 설정하며, 집단의 모든 자료로부터 가장 거리가 짧은 중심점을 기준으로
-자료를 군집화합니다.*
+자료를
+군집화합니다.*
 
 ![image](https://latex.codecogs.com/gif.latex?d%28X_i%2CQ_l%29%3D%5Csum_%7Bj%3D1%7D%5E%7Bm_r%7D%28x_%7Bij%7D%5Er-q_%7Blj%7D%5Er%29%5E2%20+%20%5Cgamma_l%5Csum_%7Bj%3D1%7D%5E%7Bm_c%7D%5Cdelta%28x_%7Bij%7D%5Ec%2Cq_%7Blj%7D%5Ec%29)
 
@@ -56,7 +57,7 @@ cluster = model.fit_predict(train, categorical=cate_variable_number)
       - 결측치가 사라진 데이터를 통해 Auto-regressive 모형과 moving-average 모형을 합친 ARIMA
         모형을 사용하여 최종적인 결과 예측
 
-<!-- end list -->
+![png](pics/model_image_02.png)
 
 ``` python
 from statsmodels.tsa.arima_model import ARIMA
