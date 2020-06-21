@@ -3,24 +3,28 @@
 
 ## 1\. 클러스터링
 
-  - K-Prototype 알고리즘 적용
-    
-      - 초기에 K-Means 클러스터링 알고리즘 고려했다, 그러나
-        
-        1)  연속형 + 범주형 변수가 섞여있는 데이터
-        2)  범주형 변수를 지시 변수화할 경우 차원이 증가
-        3)  PCA를 통해 차원을 축소할 수 있지만, 추가적인 과정이 비효율적
-    
-      - 연속형과 범주형 변수를 형태 그대로 적용할 수 있는 K-Prototype 알고리즘 사용
-        
-          - 1부터 20개의 k에서 Cost가 어떻게 변화하는지 측정
-          - Elbow-Method를 적용하여 기울기의 변동률이 10% 미만으로 떨어지며 클러스터 수가 작은 값을 적당한
-            k라고 정의합니다.
-          - 수집된 데이터 상에는 11개의 클러스터가 적당한 것으로 판단되었습니다.
-          - K-Prototype 알고리즘은 아래와 같이 K의 개수, 초기값 설정, 그리고 범주형 변수의 숫자 순서를
-            지정해야합니다.
+### K-Prototype Clustering
 
-![png](pics/model_image_01.png)
+#### 과정
+
+  - 초기에 K-Means 클러스터링 알고리즘 고려했다, 그러나
+    1)  연속형 + 범주형 변수가 섞여있는 데이터
+    2)  범주형 변수를 지시 변수화할 경우 차원이 증가
+    3)  PCA를 통해 차원을 축소할 수 있지만, 추가적인 과정이 비효율적
+    4)  연속형과 범주형 변수를 형태 그대로 적용할 수 있는 K-Prototype 알고리즘 사용
+
+#### 거리 함수
+
+  - K-Prototype 알고리즘은 아래와 같이 거리 함수를 설정하며, 집단의 모든 자료로부터 가장 거리가 짧은 중심점을
+    기준으로 자료를 군집화합니다.
+
+![image](https://latex.codecogs.com/gif.latex?d%28X_i%2CQ_l%29%3D%5Csum_%7Bj%3D1%7D%5E%7Bm_r%7D%28x_%7Bij%7D%5Er-q_%7Blj%7D%5Er%29%5E2%20+%20%5Cgamma_l%5Csum_%7Bj%3D1%7D%5E%7Bm_c%7D%5Cdelta%28x_%7Bij%7D%5Ec%2Cq_%7Blj%7D%5Ec%29)
+
+#### API
+
+  - K-Prototype 알고리즘은 아래와 같이 K의 개수, 초기값 설정, 그리고 범주형 변수의 숫자 순서를 지정해야합니다.
+
+<!-- end list -->
 
 ``` python
 from kmodes.kprototypes import KPrototypes
@@ -28,10 +32,14 @@ model = KPrototypes(n_clusters=k, random_state=0)
 cluster = model.fit_predict(train, categorical=cate_variable_number)
 ```
 
-*K-Prototype 알고리즘은 아래와 같이 거리 함수를 설정하며, 집단의 모든 자료로부터 가장 거리가 짧은 중심점을 기준으로
-자료를 군집화합니다.*
+#### K 선택
 
-![image](https://latex.codecogs.com/gif.latex?d%28X_i%2CQ_l%29%3D%5Csum_%7Bj%3D1%7D%5E%7Bm_r%7D%28x_%7Bij%7D%5Er-q_%7Blj%7D%5Er%29%5E2%20+%20%5Cgamma_l%5Csum_%7Bj%3D1%7D%5E%7Bm_c%7D%5Cdelta%28x_%7Bij%7D%5Ec%2Cq_%7Blj%7D%5Ec%29)
+  - 1부터 20개의 k에서 Cost가 어떻게 변화하는지 측정
+  - Elbow-Method를 적용하여 기울기의 변동률이 10% 미만으로 떨어지며 클러스터 수가 작은 값을 적당한 k라고
+    정의합니다.
+  - 수집된 데이터 상에는 11개의 클러스터가 적당한 것으로 판단되었습니다.
+
+![png](pics/model_image_01.png)
 
 ## 2\. 시계열 예측
 
