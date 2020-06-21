@@ -38,7 +38,8 @@ cluster = model.fit_predict(train, categorical=cate_variable_number)
   - Elbow-Method를 적용하여 기울기의 변동률이 10% 미만으로 떨어지며 클러스터 수가 작은 값을 적당한 k라고
     정의합니다.
   - 수집된 데이터 상에는 11개의 클러스터가 적당한 것으로 판단되었습니다.
-    ![png](pics/model_image_01.png)
+
+![png](pics/model_image_01.png)
 
 ## 2\. 시계열 예측
 
