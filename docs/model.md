@@ -64,7 +64,7 @@ cluster = model.fit_predict(train, categorical=cate_variable_number)
       - 결측치가 사라진 데이터를 통해 Auto-regressive 모형과 moving-average 모형을 합친 ARIMA
         모형을 사용하여 최종적인 결과 예측
 
-<!-- end list -->
+![png](pics/model_image_02.png)
 
 ``` python
 from statsmodels.tsa.arima_model import ARIMA

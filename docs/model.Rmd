@@ -53,6 +53,8 @@ cluster = model.fit_predict(train, categorical=cate_variable_number)
     - 예) 2019년 1월 은마아파트의 가격이 5억이고, 2019년 3월 은마아파트의 가격이 5억 5천이며, 2019년 2월 은마아파트의 거래가 없어 가격이 NA일 때, 이를 채우기 위해 우선적으로 은마아파트가 속한 cluster를 찾고, cluster 내 2019년 2월에 거래가 일어났고, 그 거래액이 5억과 5억 5천 사이에 있는 아파트들의 Q3값을 찾아서 대체
   - 결측치가 사라진 데이터를 통해 Auto-regressive 모형과 moving-average 모형을 합친 ARIMA 모형을 사용하여 최종적인 결과 예측
   
+![png](pics/model_image_02.png)
+  
 ```python
 from statsmodels.tsa.arima_model import ARIMA
 model = ARIMA(train, order=(0,1,1))
