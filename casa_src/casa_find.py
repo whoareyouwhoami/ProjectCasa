@@ -22,9 +22,12 @@ if casa_filter.empty:
 else:
     available_area = np.unique(casa_filter)
 
-    print('Available area for ' + name + ':')
+    tmp_area = {}
     for area in available_area:
         final = re.search('[0-9]+', area).group()
-        print(final)
+        if final not in tmp_area:
+            tmp_area[final] = final
 
-
+    print('Available area for ' + name + ':')
+    for k,v in tmp_area.items():
+        print(v)
